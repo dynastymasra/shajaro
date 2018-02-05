@@ -1,0 +1,13 @@
+package: sirius/actor
+license: MIT
+import:
+- package: github.com/dynastymasra/gochill
+- package: github.com/spf13/viper
+- package: github.com/parnurzeal/gorequest
+- package: github.com/labstack/gommon
+- package: github.com/gin-gonic/gin
+testImport:
+- package: gopkg.in/h2non/gock.v1
+- package: github.com/stretchr/testify
+  subpackages:
+  - assert
