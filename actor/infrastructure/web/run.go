@@ -3,7 +3,7 @@ package web
 import (
 	"net/http"
 	"sirius/actor/config"
-	"sirius/actor/utility"
+	"sirius/actor/helper"
 
 	"sirius/actor/infrastructure/web/route"
 
@@ -15,7 +15,7 @@ func Run() {
 	router := gin.Default()
 
 	router.NoRoute(func(c *gin.Context) {
-		c.JSON(http.StatusNotFound, utility.FailResponse("Endpoint your requested not found"))
+		c.JSON(http.StatusNotFound, helper.FailResponse("Endpoint your requested not found"))
 	})
 
 	v2 := router.Group("/v1")

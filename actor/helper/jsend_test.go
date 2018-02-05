@@ -1,7 +1,7 @@
-package utility_test
+package helper_test
 
 import (
-	"sirius/actor/utility"
+	"sirius/actor/helper"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -12,7 +12,7 @@ type testStruct struct {
 }
 
 func TestSuccessResponse(t *testing.T) {
-	resp := utility.SuccessResponse()
+	resp := helper.SuccessResponse()
 
 	assert.Equal(t, "success", resp.Status)
 }
@@ -22,14 +22,14 @@ func TestObjectResponse(t *testing.T) {
 		Test: "test",
 	}
 
-	resp := utility.ObjectResponse(data)
+	resp := helper.ObjectResponse(data)
 
 	assert.Equal(t, "success", resp.Status)
 	assert.ObjectsAreEqualValues(data, resp.Data)
 }
 
 func TestFailResponse(t *testing.T) {
-	resp := utility.FailResponse("failed")
+	resp := helper.FailResponse("failed")
 
 	assert.Equal(t, "failed", resp.Status)
 	assert.Equal(t, "failed", resp.Message)

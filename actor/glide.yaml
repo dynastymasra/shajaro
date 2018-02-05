@@ -1,5 +1,8 @@
 package: sirius/actor
 license: MIT
+owners:
+- name: Dimas Ragil Triatmaja
+  email: dynastymasra@gmail.com
 import:
 - package: github.com/dynastymasra/gochill
 - package: github.com/spf13/viper

@@ -1,4 +1,4 @@
-package utility
+package helper
 
 //Jsend used to format JSON with jsend rules
 type Jsend struct {
