@@ -1,0 +1,71 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: kong
+  labels:
+    serviceName: kong
+    type: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      serviceName: kong
+      type: app
+  template:
+    metadata:
+      name: kong
+      labels:
+        serviceName: kong
+        type: app
+    spec:
+      containers:
+      - name: kong
+        image: kong:0.12.1
+        env:
+          - name: KONG_ADMIN_LISTEN
+            value: 0.0.0.0:8001
+          - name: KONG_ADMIN_LISTEN_SSL
+            value: 0.0.0.0:8444
+          - name: KONG_DATABASE
+            value: cassandra
+          - name: KONG_CASSANDRA_CONTACT_POINTS
+            value: kong-cassandra
+          - name: KONG_CASSANDRA_KEYSPACE
+            value: kong
+          - name: KONG_CASSANDRA_REPL_FACTOR
+            value: "2"
+          - name: KONG_PROXY_ACCESS_LOG
+            value: "/dev/stdout"
+          - name: KONG_ADMIN_ACCESS_LOG
+            value: "/dev/stdout"
+          - name: KONG_PROXY_ERROR_LOG
+            value: "/dev/stderr"
+          - name: KONG_ADMIN_ERROR_LOG
+            value: "/dev/stderr"
+        ports:
+        - name: admin
+          containerPort: 8001
+          protocol: TCP
+        - name: proxy
+          containerPort: 8000
+          protocol: TCP
+        - name: proxy-ssl
+          containerPort: 8443
+          protocol: TCP
+        - name: admin-ssl
+          containerPort: 8444
+          protocol: TCP
+        livenessProbe:
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          tcpSocket:
+           port: http
+        readinessProbe:
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          httpGet:
+            path: /
+            port: 8001
+            httpHeaders:
+            - name: Content-Type
+              value: application/json

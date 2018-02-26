@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kongdash
+  labels:
+    serviceName: kongdash
+    role: external
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+    protocol: TCP
+  selector:
+    serviceName: kongdash
+    type: app
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: kongdash
+  labels:
+    serviceName: kongdash
+    role: external
+spec:
+  rules:
+  - host: kong.dynastymasra.me
+    http:
+      paths:
+      - backend:
+         serviceName: kongdash
+         servicePort: http
+  backend:
+    serviceName: kongdash
+    servicePort: http
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: kongdash
+  labels:
+    serviceName: kongdash
+    type: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      serviceName: kongdash
+      type: app
+  template:
+    metadata:
+      name: kongdash
+      labels:
+        serviceName: kongdash
+        type: app
+    spec:
+      containers:
+      - name: kongdash
+        image: pgbi/kong-dashboard:v3.1.0
+        args: ["start", "-u http://kong:8001"]
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        livenessProbe:
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          tcpSocket:
+           port: http
+        readinessProbe:
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          httpGet:
+            path: /
+            port: http

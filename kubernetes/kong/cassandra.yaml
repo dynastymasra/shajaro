@@ -1,0 +1,130 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kong-cassandra
+  labels:
+    app: cassandra
+    type: persistence
+    persistenceName: kong
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - name: cql
+      port: 9042
+      protocol: TCP
+      targetPort: 9042
+  selector:
+    app: cassandra
+    type: persistence
+    persistenceName: kong
+---
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: kong-cassandra
+  labels:
+    app: cassandra
+    persistenceName: kong
+    type: persistence
+spec:
+  serviceName: kong-cassandra
+  updateStrategy:
+      type: RollingUpdate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cassandra
+      persistenceName: kong
+      type: persistence
+  template:
+    metadata:
+      name: kong-cassandra
+      labels:
+        app: cassandra
+        persistenceName: kong
+        type: persistence
+      annotations:
+        pod.alpha.kubernetes.io/initialized: "true"
+    spec:
+      containers:
+      - name: kong-cassandra
+        image: cassandra:3.11.2
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 7000
+          name: intra-node
+        - containerPort: 7001
+          name: tls-intra-node
+        - containerPort: 7199
+          name: jmx
+        - containerPort: 9042
+          name: cql
+        resources: {}
+        securityContext:
+          capabilities:
+            add:
+              - IPC_LOCK
+        env:
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: MAX_HEAP_SIZE
+            value: 2G
+          - name: HEAP_NEWSIZE
+            value: 512M
+          - name: CASSANDRA_SEEDS
+          # <pod_name>.<svc-name>.<namespace>.svc.cluster.local
+            value: kong-cassandra-0.kong-cassandra.$(POD_NAMESPACE).svc.cluster.local
+          - name: CASSANDRA_CLUSTER_NAME
+            value: "kong"
+          - name: CASSANDRA_DC
+            value: "kong-dc"
+          - name: CASSANDRA_RACK
+            value: "kong-rack"
+          - name: CASSANDRA_AUTO_BOOTSTRAP
+            value: "false"
+          - name: POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+        readinessProbe:
+          failureThreshold: 6
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 5
+          successThreshold: 1
+          tcpSocket:
+            port: 9042
+        # These volume mounts are persistent. They are like inline claims,
+        # but not exactly because the names need to match exactly one of
+        # the stateful pod volumes.
+        livenessProbe:
+          failureThreshold: 6
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          successThreshold: 1
+          tcpSocket:
+            port: 9042
+          timeoutSeconds: 5
+        volumeMounts:
+        - mountPath: /cassandra_data
+          name: data
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+  # These are converted to volume claims by the controller
+  # and mounted at the paths mentioned above.
+  # do not use these in production until ssd GCEPersistentDisk or other ssd pd
+  volumeClaimTemplates:
+  - metadata:
+      annotations:
+        volume.alpha.kubernetes.io/storage-class: anything
+      creationTimestamp: null
+      name: data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 5Gi

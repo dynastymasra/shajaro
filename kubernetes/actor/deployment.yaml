@@ -1,0 +1,47 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: actor
+  labels:
+    serviceName: actor
+    type: app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      serviceName: actor
+      type: app
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      name: actor
+      labels:
+        serviceName: actor
+        type: app
+    spec:
+      containers:
+      - name: actor
+        image: gcr.io/crypto-pulsar-194606/sirius/actor:develop
+        ports:
+        - name: http
+          containerPort: 8080
+        livenessProbe:
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          tcpSocket:
+            port: http
+        readinessProbe:
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          httpGet:
+            path: /v1/ping
+            port: http
+        env:
+          - name: ADDRESS
+            value: :8080
+          - name: GIN_MODE
+            value: debug
