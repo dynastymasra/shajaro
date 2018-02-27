@@ -46,6 +46,8 @@ metadata:
     serviceName: kong
     role: external
 spec:
+  tls:
+  - secretName: dynastymasra-ssl
   rules:
   - host: api.dynastymasra.me
     http:

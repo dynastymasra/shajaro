@@ -24,6 +24,8 @@ metadata:
     serviceName: kongdash
     role: external
 spec:
+  tls:
+  - secretName: dynastymasra-ssl
   rules:
   - host: kong.dynastymasra.me
     http:
@@ -62,7 +64,7 @@ spec:
         - name: SECRET_AUTH
           valueFrom:
             secretKeyRef:
-              name: kongdash
+              name: kongdash-auth
               key: auth
         args: ["start", "-u http://kong:8001", $(SECRET_AUTH)]
         ports:
