@@ -57,8 +57,14 @@ spec:
     spec:
       containers:
       - name: kongdash
-        image: pgbi/kong-dashboard:v3.1.0
-        args: ["start", "-u http://kong:8001"]
+        image: pgbi/kong-dashboard:v3
+        env:
+        - name: SECRET_AUTH
+          valueFrom:
+            secretKeyRef:
+              name: kongdash
+              key: auth
+        args: ["start", "-u http://kong:8001", $(SECRET_AUTH)]
         ports:
         - name: http
           containerPort: 8080
@@ -72,5 +78,5 @@ spec:
           initialDelaySeconds: 60
           periodSeconds: 30
           httpGet:
-            path: /
+            path: /healthz
             port: http
