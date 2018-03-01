@@ -21,7 +21,7 @@ spec:
       volumes:
       - name: ssl-cert
         secret:
-          secretName: dynastymasra-ssl
+          secretName: auth-ssl
       containers:
       - name: kong
         image: kong:0.12.1
@@ -70,8 +70,5 @@ spec:
           initialDelaySeconds: 60
           periodSeconds: 30
           httpGet:
-            path: /
+            path: /status
             port: 8001
-            httpHeaders:
-            - name: Content-Type
-              value: application/json

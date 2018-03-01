@@ -38,16 +38,38 @@ spec:
     serviceName: kong
     type: app
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kongdash
+  labels:
+    serviceName: kongdash
+    role: external
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+    protocol: TCP
+  selector:
+    serviceName: kongdash
+    type: app
+---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    ingress.kubernetes.io/ssl-redirect: "true"
   name: kong
   labels:
     serviceName: kong
     role: external
 spec:
   tls:
-  - secretName: dynastymasra-ssl
+  - secretName: auth-ssl
   rules:
   - host: api.dynastymasra.me
     http:
@@ -61,6 +83,9 @@ spec:
       - backend:
          serviceName: kong-ext
          servicePort: http
-  backend:
-   serviceName: kong-ext
-   servicePort: http
+  - host: kong.dynastymasra.me
+    http:
+      paths:
+      - backend:
+          serviceName: kongdash
+          servicePort: http
