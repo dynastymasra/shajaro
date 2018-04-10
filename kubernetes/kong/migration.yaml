@@ -9,14 +9,14 @@ spec:
     spec:
       containers:
       - name: kong-migration
-        image: kong
+        image: kong:0.12.1
         env:
           - name: KONG_NGINX_DAEMON
             value: 'off'
           - name: KONG_DATABASE
             value: cassandra
           - name: KONG_CASSANDRA_CONTACT_POINTS
-            value: kong-cassandra
+            value: cassandra-kong
           - name: KONG_CASSANDRA_KEYSPACE
             value: kong
         command: [ "/bin/sh", "-c", "kong migrations up" ]
