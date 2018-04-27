@@ -12,6 +12,10 @@ spec:
     port: 80
     targetPort: 8080
     protocol: TCP
+  - name: https
+    port: 443
+    targetPort: 8080
+    protocol: TCP
   selector:
     serviceName: kongdash
     type: app
@@ -24,6 +28,7 @@ metadata:
     serviceName: kongdash
     type: app
 spec:
+  replicas: 1
   selector:
     matchLabels:
       serviceName: kongdash
@@ -65,3 +70,28 @@ spec:
           httpGet:
             path: /healthz
             port: http
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    ingress.kubernetes.io/ssl-redirect: "true"
+  name: kongdash
+  labels:
+    serviceName: kongdash
+    role: external
+spec:
+  tls:
+  - secretName: auth-ssl
+  rules:
+  - host: management.dynastymasra.me
+    http:
+      paths:
+      - backend:
+          serviceName: kongdash
+          servicePort: https
+  backend:
+    serviceName: kongdash
+    servicePort: https

@@ -9,13 +9,13 @@ spec:
   type: ClusterIP
   sessionAffinity: None
   ports:
-  - name: consumer
-    port: 8000
-    targetPort: 8000
-    protocol: TCP
-  - name: admin
+  - name: http
     port: 8001
     targetPort: 8001
+    protocol: TCP
+  - name: https
+    port: 8444
+    targetPort: 8444
     protocol: TCP
   selector:
     serviceName: kong
@@ -29,11 +29,16 @@ metadata:
     serviceName: kong
     type: external
 spec:
-  type: NodePort
+  type: LoadBalancer
+  sessionAffinity: None
   ports:
   - name: http
     port: 80
     targetPort: 8000
+    protocol: TCP
+  - name: https
+    port: 443
+    targetPort: 8443
     protocol: TCP
   selector:
     serviceName: kong
@@ -47,6 +52,7 @@ metadata:
     serviceName: kong
     type: app
 spec:
+  replicas: 1
   selector:
     matchLabels:
       serviceName: kong
@@ -62,6 +68,7 @@ spec:
       labels:
         serviceName: kong
         type: app
+        stack: nginx
     spec:
       volumes:
       - name: ssl-cert
@@ -69,7 +76,8 @@ spec:
           secretName: auth-ssl
       containers:
       - name: kong
-        image: kong:0.12.1
+        image: kong:0.12.3
+        imagePullPolicy: IfNotPresent
         volumeMounts:
         - name: ssl-cert
           mountPath: "/etc/secret"
@@ -85,8 +93,8 @@ spec:
             value: cassandra-kong
           - name: KONG_CASSANDRA_KEYSPACE
             value: kong
-          - name: KONG_CASSANDRA_REPL_FACTOR
-            value: "2"
+          - name: KONG_CASSANDRA_CONSISTENCY
+            value: QUORUM
           - name: KONG_PROXY_ACCESS_LOG
             value: "/dev/stdout"
           - name: KONG_ADMIN_ACCESS_LOG
@@ -103,8 +111,14 @@ spec:
         - name: admin
           containerPort: 8001
           protocol: TCP
+        - name: admin-ssl
+          containerPort: 8444
+          protocol: TCP
         - name: proxy
           containerPort: 8000
+          protocol: TCP
+        - name: proxy-ssl
+          containerPort: 8443
           protocol: TCP
         livenessProbe:
           initialDelaySeconds: 60
