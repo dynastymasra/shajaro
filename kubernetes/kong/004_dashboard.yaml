@@ -86,7 +86,7 @@ spec:
   tls:
   - secretName: auth-ssl
   rules:
-  - host: management.dynastymasra.me
+  - host: admin.dynastymasra.me
     http:
       paths:
       - backend:
