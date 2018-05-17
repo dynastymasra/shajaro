@@ -8,5 +8,5 @@ import (
 
 // ControllerRouter group router
 func ControllerRouter(router *gin.RouterGroup) {
-	router.Any("/ping", controller.PingController)
+	router.Any("/healthz", controller.HealthzController)
 }
