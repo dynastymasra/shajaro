@@ -19,22 +19,23 @@ import (
 func Run() {
 	pack := runtime.FuncForPC(reflect.ValueOf(Run).Pointer()).Name()
 
-	log.Alert(log.Msg("Prepare run web application"), log.O("package", pack),
-		log.O("version", config.Version))
+	log.Info(log.Msg("Start run web application"), log.O("package", pack),
+		log.O("version", config.Version), log.O("project", config.ProjectName))
 
 	gin.SetMode(config.GinMode)
 	router := gin.Default()
 
-	router.Use(middleware.Header())
+	router.Use(middleware.RequestKey())
 
 	router.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, helper.FailResponse(config.ErrEndpointNotFound))
 		return
 	})
 
-	v2 := router.Group("/v1")
+	v1 := router.Group("/v1")
 	{
-		route.ControllerRouter(v2)
+		route.ControllerRouter(v1)
+		route.ActorRouter(v1)
 	}
 
 	router.Run(config.Address)

@@ -9,6 +9,13 @@ const (
 	// Header name
 	HeaderRequestID = "X-Request-ID"
 
+	CountryJSON = "countries.json"
+
 	// Resource of error descriptions
-	ErrEndpointNotFound = "Endpoint your requested not found"
+	ErrEndpointNotFound    = "endpoint your requested not found"
+	ErrDatabaseNil         = "database object is nil"
+	ErrDatabaseConnectFail = "failed connected to database"
+	ErrPingDatabaseFail    = "ping database connection failed"
+
+	ErrCastingData = "failed casting data type"
 )

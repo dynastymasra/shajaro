@@ -1,0 +1,289 @@
+[
+  {
+    "name": "Brunei Darussalam",
+    "capital": "Bandar Seri Begawan",
+    "ISO_3166_2": "BN",
+    "ISO_3166_3": "BRN",
+    "calling_code": "+673",
+    "currency": {
+      "name": "Brunei Dollar",
+      "ISO_4217": "BND"
+    },
+    "image": {
+      "flat": {
+        "16": "https://countryflags.io/bn/flat/16.png",
+        "24": "https://countryflags.io/bn/flat/24.png",
+        "32": "https://countryflags.io/bn/flat/32.png",
+        "48": "https://countryflags.io/bn/flat/48.png",
+        "64": "https://countryflags.io/bn/flat/64.png"
+      },
+      "shiny": {
+        "16": "https://countryflags.io/bn/shiny/16.png",
+        "24": "https://countryflags.io/bn/shiny/24.png",
+        "32": "https://countryflags.io/bn/shiny/32.png",
+        "48": "https://countryflags.io/bn/shiny/48.png",
+        "64": "https://countryflags.io/bn/shiny/64.png"
+      }
+    }
+  },{
+    "name": "Cambodia",
+    "capital": "Phnom Penh",
+    "ISO_3166_2": "KH",
+    "ISO_3166_3": "KHM",
+    "calling_code": "+855",
+    "currency": {
+      "name": "Riel",
+      "ISO_4217": "KHR"
+    },
+    "image": {
+      "flat": {
+        "16": "https://countryflags.io/kh/flat/16.png",
+        "24": "https://countryflags.io/kh/flat/24.png",
+        "32": "https://countryflags.io/kh/flat/32.png",
+        "48": "https://countryflags.io/kh/flat/48.png",
+        "64": "https://countryflags.io/kh/flat/64.png"
+      },
+      "shiny": {
+        "16": "https://countryflags.io/kh/shiny/16.png",
+        "24": "https://countryflags.io/kh/shiny/24.png",
+        "32": "https://countryflags.io/kh/shiny/32.png",
+        "48": "https://countryflags.io/kh/shiny/48.png",
+        "64": "https://countryflags.io/kh/shiny/64.png"
+      }
+    }
+  },{
+    "name": "Indonesia",
+    "capital": "Jakarta",
+    "ISO_3166_2": "ID",
+    "ISO_3166_3": "IDN",
+    "calling_code": "+62",
+    "currency": {
+      "name": "Rupiah",
+      "ISO_4217": "IDR"
+    },
+    "image": {
+      "flat": {
+        "16": "https://countryflags.io/id/flat/16.png",
+        "24": "https://countryflags.io/id/flat/24.png",
+        "32": "https://countryflags.io/id/flat/32.png",
+        "48": "https://countryflags.io/id/flat/48.png",
+        "64": "https://countryflags.io/id/flat/64.png"
+      },
+      "shiny": {
+        "16": "https://countryflags.io/id/shiny/16.png",
+        "24": "https://countryflags.io/id/shiny/24.png",
+        "32": "https://countryflags.io/id/shiny/32.png",
+        "48": "https://countryflags.io/id/shiny/48.png",
+        "64": "https://countryflags.io/id/shiny/64.png"
+      }
+    }
+  },{
+    "name": "Laos",
+    "capital": "Vientiane",
+    "ISO_3166_2": "LA",
+    "ISO_3166_3": "LAO",
+    "calling_code": "+856",
+    "currency": {
+      "name": "Kip",
+      "ISO_4217": "LAK"
+    },
+    "image": {
+      "flat": {
+        "16": "https://countryflags.io/la/flat/16.png",
+        "24": "https://countryflags.io/la/flat/24.png",
+        "32": "https://countryflags.io/la/flat/32.png",
+        "48": "https://countryflags.io/la/flat/48.png",
+        "64": "https://countryflags.io/la/flat/64.png"
+      },
+      "shiny": {
+        "16": "https://countryflags.io/la/shiny/16.png",
+        "24": "https://countryflags.io/la/shiny/24.png",
+        "32": "https://countryflags.io/la/shiny/32.png",
+        "48": "https://countryflags.io/la/shiny/48.png",
+        "64": "https://countryflags.io/la/shiny/64.png"
+      }
+    }
+  },{
+    "name": "Malaysia",
+    "capital": "Kuala Lumpur",
+    "ISO_3166_2": "MY",
+    "ISO_3166_3": "MYS",
+    "calling_code": "+60",
+    "currency": {
+      "name": "Malaysian Ringgit",
+      "ISO_4217": "MYR"
+    },
+    "image": {
+      "flat": {
+        "16": "https://countryflags.io/my/flat/16.png",
+        "24": "https://countryflags.io/my/flat/24.png",
+        "32": "https://countryflags.io/my/flat/32.png",
+        "48": "https://countryflags.io/my/flat/48.png",
+        "64": "https://countryflags.io/my/flat/64.png"
+      },
+      "shiny": {
+        "16": "https://countryflags.io/my/shiny/16.png",
+        "24": "https://countryflags.io/my/shiny/24.png",
+        "32": "https://countryflags.io/my/shiny/32.png",
+        "48": "https://countryflags.io/my/shiny/48.png",
+        "64": "https://countryflags.io/my/shiny/64.png"
+      }
+    }
+  },{
+    "name": "Myanmar",
+    "capital": "Naypyitaw",
+    "ISO_3166_2": "MM",
+    "ISO_3166_3": "MMR",
+    "calling_code": "+95",
+    "currency": {
+      "name": "Kyat",
+      "ISO_4217": "MMK"
+    },
+    "image": {
+      "flat": {
+        "16": "https://countryflags.io/mm/flat/16.png",
+        "24": "https://countryflags.io/mm/flat/24.png",
+        "32": "https://countryflags.io/mm/flat/32.png",
+        "48": "https://countryflags.io/mm/flat/48.png",
+        "64": "https://countryflags.io/mm/flat/64.png"
+      },
+      "shiny": {
+        "16": "https://countryflags.io/mm/shiny/16.png",
+        "24": "https://countryflags.io/mm/shiny/24.png",
+        "32": "https://countryflags.io/mm/shiny/32.png",
+        "48": "https://countryflags.io/mm/shiny/48.png",
+        "64": "https://countryflags.io/mm/shiny/64.png"
+      }
+    }
+  },{
+    "name": "Philippines",
+    "capital": "Manila",
+    "ISO_3166_2": "PH",
+    "ISO_3166_3": "PHL",
+    "calling_code": "+63",
+    "currency": {
+      "name": "Philippine Peso",
+      "ISO_4217": "PHP"
+    },
+    "image": {
+      "flat": {
+        "16": "https://countryflags.io/ph/flat/16.png",
+        "24": "https://countryflags.io/ph/flat/24.png",
+        "32": "https://countryflags.io/ph/flat/32.png",
+        "48": "https://countryflags.io/ph/flat/48.png",
+        "64": "https://countryflags.io/ph/flat/64.png"
+      },
+      "shiny": {
+        "16": "https://countryflags.io/ph/shiny/16.png",
+        "24": "https://countryflags.io/ph/shiny/24.png",
+        "32": "https://countryflags.io/ph/shiny/32.png",
+        "48": "https://countryflags.io/ph/shiny/48.png",
+        "64": "https://countryflags.io/ph/shiny/64.png"
+      }
+    }
+  },{
+    "name": "Singapore",
+    "capital": "Singapore",
+    "ISO_3166_2": "SG",
+    "ISO_3166_3": "SGP",
+    "calling_code": "+65",
+    "currency": {
+      "name": "Singapore Dollar",
+      "ISO_4217": "SGD"
+    },
+    "image": {
+      "flat": {
+        "16": "https://countryflags.io/sg/flat/16.png",
+        "24": "https://countryflags.io/sg/flat/24.png",
+        "32": "https://countryflags.io/sg/flat/32.png",
+        "48": "https://countryflags.io/sg/flat/48.png",
+        "64": "https://countryflags.io/sg/flat/64.png"
+      },
+      "shiny": {
+        "16": "https://countryflags.io/sg/shiny/16.png",
+        "24": "https://countryflags.io/sg/shiny/24.png",
+        "32": "https://countryflags.io/sg/shiny/32.png",
+        "48": "https://countryflags.io/sg/shiny/48.png",
+        "64": "https://countryflags.io/sg/shiny/64.png"
+      }
+    }
+  },{
+    "name": "Thailand",
+    "capital": "Bangkok",
+    "ISO_3166_2": "TH",
+    "ISO_3166_3": "THA",
+    "calling_code": "+66",
+    "currency": {
+      "name": "Thai Baht",
+      "ISO_4217": "THB"
+    },
+    "image": {
+      "flat": {
+        "16": "https://countryflags.io/th/flat/16.png",
+        "24": "https://countryflags.io/th/flat/24.png",
+        "32": "https://countryflags.io/th/flat/32.png",
+        "48": "https://countryflags.io/th/flat/48.png",
+        "64": "https://countryflags.io/th/flat/64.png"
+      },
+      "shiny": {
+        "16": "https://countryflags.io/th/shiny/16.png",
+        "24": "https://countryflags.io/th/shiny/24.png",
+        "32": "https://countryflags.io/th/shiny/32.png",
+        "48": "https://countryflags.io/th/shiny/48.png",
+        "64": "https://countryflags.io/th/shiny/64.png"
+      }
+    }
+  },{
+    "name": "Timor-Leste",
+    "capital": "Dili",
+    "ISO_3166_2": "TL",
+    "ISO_3166_3": "TLS",
+    "calling_code": "+670",
+    "currency": {
+      "name": "US Dollar",
+      "ISO_4217": "USD"
+    },
+    "image": {
+      "flat": {
+        "16": "https://countryflags.io/tl/flat/16.png",
+        "24": "https://countryflags.io/tl/flat/24.png",
+        "32": "https://countryflags.io/tl/flat/32.png",
+        "48": "https://countryflags.io/tl/flat/48.png",
+        "64": "https://countryflags.io/tl/flat/64.png"
+      },
+      "shiny": {
+        "16": "https://countryflags.io/tl/shiny/16.png",
+        "24": "https://countryflags.io/tl/shiny/24.png",
+        "32": "https://countryflags.io/tl/shiny/32.png",
+        "48": "https://countryflags.io/tl/shiny/48.png",
+        "64": "https://countryflags.io/tl/shiny/64.png"
+      }
+    }
+  },{
+    "name": "Vietnam",
+    "capital": "Hanoi",
+    "ISO_3166_2": "VN",
+    "ISO_3166_3": "VNM",
+    "calling_code": "+84",
+    "currency": {
+      "name": "Vietnamese Dong",
+      "ISO_4217": "VND"
+    },
+    "image": {
+      "flat": {
+        "16": "https://countryflags.io/vn/flat/16.png",
+        "24": "https://countryflags.io/vn/flat/24.png",
+        "32": "https://countryflags.io/vn/flat/32.png",
+        "48": "https://countryflags.io/vn/flat/48.png",
+        "64": "https://countryflags.io/vn/flat/64.png"
+      },
+      "shiny": {
+        "16": "https://countryflags.io/vn/shiny/16.png",
+        "24": "https://countryflags.io/vn/shiny/24.png",
+        "32": "https://countryflags.io/vn/shiny/32.png",
+        "48": "https://countryflags.io/vn/shiny/48.png",
+        "64": "https://countryflags.io/vn/shiny/64.png"
+      }
+    }
+  }
+]

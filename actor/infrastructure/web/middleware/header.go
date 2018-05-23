@@ -7,7 +7,7 @@ import (
 	"github.com/labstack/gommon/random"
 )
 
-func Header() gin.HandlerFunc {
+func RequestKey() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		requestID := c.Request.Header.Get(config.HeaderRequestID)
 		if len(requestID) > 0 {
