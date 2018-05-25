@@ -1,2 +1,3 @@
 # sirius
-Project human resource development apps with microservice architecture
+
+Learning Go and deploy with kubernetes

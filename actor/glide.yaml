@@ -11,6 +11,8 @@ import:
 - package: github.com/gin-gonic/gin
 - package: gopkg.in/go-playground/validator.v9
 - package: github.com/matryer/resync
+- package: github.com/satori/go.uuid
+- package: github.com/cenkalti/backoff
 testImport:
 - package: gopkg.in/h2non/gock.v1
 - package: github.com/stretchr/testify
