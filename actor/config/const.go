@@ -2,7 +2,7 @@ package config
 
 const (
 	Version     = "1.0.0"
-	ProjectName = "Sirius"
+	ProjectName = "Gapura"
 	AppName     = "Actor"
 	TraceKey    = "request_id"
 	RedirectURI = "https://www.sirius.co.id"
