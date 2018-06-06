@@ -24,6 +24,7 @@ func (ar ActorRepository) CreateUser(user actor.User) error {
 	return ar.DB.Create(&user).Error
 }
 
-func (ar ActorRepository) EmailNotFound(email string) bool {
-	return ar.DB.Where("email = ?", email).RecordNotFound()
+func (ar ActorRepository) CheckEmailExist(email string) bool {
+	var user actor.User
+	return ar.DB.Where("email = ?", email).First(&user).RecordNotFound()
 }

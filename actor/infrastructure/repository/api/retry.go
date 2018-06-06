@@ -11,7 +11,7 @@ import (
 func BackOffRetry() *backoff.ExponentialBackOff {
 	back := backoff.NewExponentialBackOff()
 	back.MaxElapsedTime = time.Duration(config.RetryDuration) * time.Second
-	back.MaxInterval = 10 * time.Second
+	back.MaxInterval = time.Duration(config.MaxRetryInterval) * time.Second
 
 	return back
 }

@@ -44,7 +44,7 @@ type (
 	}
 
 	Userer interface {
-		EmailNotFound(string) bool
+		CheckEmailExist(string) bool
 		CreateUser(User) error
 	}
 )

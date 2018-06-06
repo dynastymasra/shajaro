@@ -3,9 +3,10 @@ package config
 import "github.com/spf13/viper"
 
 var (
-	Address       string
-	GinMode       string
-	RetryDuration int
+	Address          string
+	GinMode          string
+	RetryDuration    int
+	MaxRetryInterval int
 
 	DatabaseUsername string
 	DatabasePassword string
@@ -21,7 +22,8 @@ var (
 func setDefault() {
 	viper.SetDefault("ADDRESS", ":8080")
 	viper.SetDefault("GIN_MODE", "debug")
-	viper.SetDefault("RETRY_DURATION", 40)
+	viper.SetDefault("RETRY_DURATION", 30)
+	viper.SetDefault("MAX_RETRY_INTERVAL", 5)
 
 	viper.SetDefault("DATABASE_ADDRESS", "localhost:5432")
 	viper.SetDefault("DATABASE_USERNAME", "postgres")
@@ -41,6 +43,7 @@ func InitConfig() {
 	Address = viper.GetString("ADDRESS")
 	GinMode = viper.GetString("GIN_MODE")
 	RetryDuration = viper.GetInt("RETRY_DURATION")
+	MaxRetryInterval = viper.GetInt("MAX_RETRY_INTERVAL")
 
 	DatabaseAddress = viper.GetString("DATABASE_ADDRESS")
 	DatabaseUsername = viper.GetString("DATABASE_USERNAME")

@@ -24,6 +24,7 @@ import (
 
 	log "github.com/dynastymasra/gochill"
 	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
 	"github.com/satori/go.uuid"
 	"gopkg.in/go-playground/validator.v9"
 )
@@ -82,6 +83,19 @@ func RegisterController(c *gin.Context) {
 		return
 	}
 
+	actorRepository := sql.NewUserRepository(c, db)
+
+	exits := actorRepository.CheckEmailExist(user.Email)
+	if !exits {
+		log.Warn(log.Msg("Email already exists", user.Email), log.O("version", config.Version),
+			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
+			log.O("package", pack), log.O("body", helper.Stringify(user)))
+		errDesc := errors.New(fmt.Sprintf("email %v already exists", user.Email))
+		c.Error(errDesc)
+		c.JSON(http.StatusConflict, helper.FailResponse(errDesc.Error()))
+		return
+	}
+
 	h := sha512.New512_256()
 	user.Password = fmt.Sprintf("%x", h.Sum([]byte(user.Password)))
 	user.ID = uuid.NewV4().String()
@@ -104,8 +118,6 @@ func RegisterController(c *gin.Context) {
 		return
 	}
 	user.ConsumerID = consumerResp.ID
-
-	actorRepository := sql.NewUserRepository(c, db)
 
 	if err := actorRepository.CreateUser(user); err != nil {
 		log.Error(log.Msg("Failed create new user", err.Error()), log.O("version", config.Version),
