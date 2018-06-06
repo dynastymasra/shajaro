@@ -15,6 +15,8 @@ import (
 	"shajaro/actor/domain/kong"
 	"shajaro/actor/helper"
 
+	"shajaro/actor/domain"
+
 	"github.com/cenkalti/backoff"
 	log "github.com/dynastymasra/gochill"
 	"github.com/parnurzeal/gorequest"
@@ -128,4 +130,8 @@ func (kr KongRepository) CreateOauth(consumerID string, oauth kong.Oauth) (*kong
 	}
 
 	return response, status, nil
+}
+
+func (kr KongRepository) GetOauthByName(consumer string, name domain.OauthName) ([]kong.Oauth, int, error) {
+	return nil, 0, nil
 }

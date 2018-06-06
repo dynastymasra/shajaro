@@ -13,5 +13,6 @@ type (
 
 	Oauther interface {
 		CreateOauth(string, Oauth) (*Oauth, int, error)
+		GetOauthByName(string, domain.OauthName) ([]Oauth, int, error)
 	}
 )

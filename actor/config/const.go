@@ -1,8 +1,8 @@
 package config
 
 const (
-	Version     = "1.0.0"
-	ProjectName = "Gapura"
+	Version     = "1.0.0-dev"
+	ProjectName = "Shajaro"
 	AppName     = "Actor"
 	TraceKey    = "request_id"
 	RedirectURI = "https://www.sirius.co.id"
@@ -18,6 +18,7 @@ const (
 	ErrDatabaseConnectFail = "failed connected to database"
 	ErrPingDatabaseFail    = "ping database connection failed"
 	ErrFailedSaveNewUser   = "failed to save new user"
+	ErrFailedLogin         = "failed login user, check your email and password"
 
 	ErrCastingData = "failed casting data type"
 )

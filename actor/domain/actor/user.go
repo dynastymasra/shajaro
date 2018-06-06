@@ -30,6 +30,12 @@ type (
 		BirthDate  string        `json:"birth_date" validate:"required" gorm:"not null;column:birth_date"`
 	}
 
+	Login struct {
+		Email     string           `json:"email" validate:"email,required"`
+		Password  string           `json:"password" validate:"required"`
+		OauthName domain.OauthName `json:"type" validate:"required"`
+	}
+
 	Phone struct {
 		CallingCode string `json:"calling_code" validate:"required"`
 		Number      string `json:"number" validate:"required"`
@@ -44,7 +50,8 @@ type (
 	}
 
 	Userer interface {
-		CheckEmailExist(string) bool
+		CheckEmailNotExist(string) bool
+		UserLogin(string, string) (*User, error)
 		CreateUser(User) error
 	}
 )
