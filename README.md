@@ -1,3 +1,3 @@
-# Gapura
+# Shajaro
 
-Gapura is project user management system. 
+Shajaro is project for learning. 
