@@ -1,3 +1,3 @@
 # Gapura
 
-Learning Go and deploy with kubernetes
+Gapura is project user management system. 
