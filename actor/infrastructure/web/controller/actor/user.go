@@ -85,8 +85,8 @@ func RegisterController(c *gin.Context) {
 
 	actorRepository := sql.NewUserRepository(c, db)
 
-	exits := actorRepository.CheckEmailExist(user.Email)
-	if !exits {
+	exists := actorRepository.CheckEmailExist(user.Email)
+	if !exists {
 		log.Warn(log.Msg("Email already exists", user.Email), log.O("version", config.Version),
 			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
 			log.O("package", pack), log.O("body", helper.Stringify(user)))
