@@ -4,15 +4,15 @@ import (
 	"os"
 	"reflect"
 	"runtime"
-	"sirius/actor/config"
-	"sirius/actor/infrastructure/web"
 
 	"os/signal"
 	"syscall"
 
 	"fmt"
 
-	"sirius/actor/infrastructure/provider"
+	"shajaro/actor/config"
+	"shajaro/actor/infrastructure/provider"
+	"shajaro/actor/infrastructure/web"
 
 	log "github.com/dynastymasra/gochill"
 )

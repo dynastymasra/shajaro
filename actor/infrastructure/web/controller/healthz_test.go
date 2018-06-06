@@ -3,8 +3,9 @@ package controller_test
 import (
 	"net/http"
 	"net/http/httptest"
-	"sirius/actor/infrastructure/web/controller"
 	"testing"
+
+	"shajaro/actor/infrastructure/web/controller"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"

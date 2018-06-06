@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"sirius/actor/config"
+	"shajaro/actor/config"
 
 	"github.com/gin-gonic/gin"
 	"github.com/labstack/gommon/random"

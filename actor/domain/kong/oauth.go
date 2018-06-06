@@ -1,6 +1,6 @@
 package kong
 
-import "sirius/actor/domain"
+import "shajaro/actor/domain"
 
 type (
 	Oauth struct {

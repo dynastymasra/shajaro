@@ -6,10 +6,10 @@ import (
 	"errors"
 	"reflect"
 	"runtime"
-	"sirius/actor/config"
-	"sirius/actor/helper"
 
-	"sirius/actor/domain"
+	"shajaro/actor/config"
+	"shajaro/actor/domain"
+	"shajaro/actor/helper"
 
 	log "github.com/dynastymasra/gochill"
 )

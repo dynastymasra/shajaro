@@ -2,16 +2,15 @@ package web
 
 import (
 	"net/http"
-	"sirius/actor/config"
-	"sirius/actor/helper"
-	"sirius/actor/infrastructure/web/route"
+	"shajaro/actor/config"
+	"shajaro/actor/helper"
+	"shajaro/actor/infrastructure/web/middleware"
+	"shajaro/actor/infrastructure/web/route"
 
 	"github.com/gin-gonic/gin"
 
 	"reflect"
 	"runtime"
-
-	"sirius/actor/infrastructure/web/middleware"
 
 	log "github.com/dynastymasra/gochill"
 )

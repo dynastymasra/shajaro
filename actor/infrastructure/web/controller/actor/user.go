@@ -3,29 +3,24 @@ package actor
 import (
 	"reflect"
 	"runtime"
-	"sirius/actor/config"
 
 	"bytes"
 	"encoding/json"
 	"net/http"
-	"sirius/actor/domain/actor"
-	"sirius/actor/helper"
-
-	"sirius/actor/infrastructure/provider"
-
-	"sirius/actor/domain"
-
-	"sirius/actor/service"
-
-	"sirius/actor/infrastructure/repository/api"
-
-	"sirius/actor/domain/kong"
-
-	"sirius/actor/infrastructure/repository/sql"
 
 	"fmt"
 
 	"crypto/sha512"
+
+	"shajaro/actor/config"
+	"shajaro/actor/domain"
+	"shajaro/actor/domain/actor"
+	"shajaro/actor/domain/kong"
+	"shajaro/actor/helper"
+	"shajaro/actor/infrastructure/provider"
+	"shajaro/actor/infrastructure/repository/api"
+	"shajaro/actor/infrastructure/repository/sql"
+	"shajaro/actor/service"
 
 	log "github.com/dynastymasra/gochill"
 	"github.com/gin-gonic/gin"

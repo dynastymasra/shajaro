@@ -1,7 +1,7 @@
 package route
 
 import (
-	"sirius/actor/infrastructure/web/controller/actor"
+	"shajaro/actor/infrastructure/web/controller/actor"
 
 	"github.com/gin-gonic/gin"
 )

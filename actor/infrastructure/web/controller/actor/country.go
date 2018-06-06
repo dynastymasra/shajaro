@@ -4,13 +4,13 @@ import (
 	"io/ioutil"
 	"reflect"
 	"runtime"
-	"sirius/actor/config"
 
 	"encoding/json"
 	"net/http"
-	"sirius/actor/helper"
 
-	"sirius/actor/domain/actor"
+	"shajaro/actor/config"
+	"shajaro/actor/domain/actor"
+	"shajaro/actor/helper"
 
 	log "github.com/dynastymasra/gochill"
 	"github.com/gin-gonic/gin"

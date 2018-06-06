@@ -3,7 +3,7 @@ package sql
 import (
 	"context"
 
-	"sirius/actor/domain/actor"
+	"shajaro/actor/domain/actor"
 
 	"github.com/jinzhu/gorm"
 )

@@ -1,8 +1,6 @@
 package provider
 
 import (
-	"sirius/actor/config"
-
 	"github.com/jinzhu/gorm"
 	"github.com/matryer/resync"
 
@@ -12,6 +10,8 @@ import (
 	"fmt"
 
 	"errors"
+
+	"shajaro/actor/config"
 
 	log "github.com/dynastymasra/gochill"
 	_ "github.com/jinzhu/gorm/dialects/postgres"

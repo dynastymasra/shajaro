@@ -1,8 +1,9 @@
 package api
 
 import (
-	"sirius/actor/config"
 	"time"
+
+	"shajaro/actor/config"
 
 	"github.com/cenkalti/backoff"
 )

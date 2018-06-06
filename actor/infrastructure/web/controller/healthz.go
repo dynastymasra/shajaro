@@ -2,14 +2,13 @@ package controller
 
 import (
 	"net/http"
-	"sirius/actor/helper"
-
-	"sirius/actor/config"
 
 	"reflect"
 	"runtime"
 
-	"sirius/actor/infrastructure/provider"
+	"shajaro/actor/config"
+	"shajaro/actor/helper"
+	"shajaro/actor/infrastructure/provider"
 
 	log "github.com/dynastymasra/gochill"
 	"github.com/gin-gonic/gin"

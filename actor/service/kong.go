@@ -4,11 +4,11 @@ import (
 	"context"
 	"reflect"
 	"runtime"
-	"sirius/actor/config"
-	"sirius/actor/domain/kong"
-	"sirius/actor/helper"
 
-	"sirius/actor/domain"
+	"shajaro/actor/config"
+	"shajaro/actor/domain"
+	"shajaro/actor/domain/kong"
+	"shajaro/actor/helper"
 
 	log "github.com/dynastymasra/gochill"
 )
