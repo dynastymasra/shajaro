@@ -1,0 +1,121 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-actor
+  labels:
+    serviceName: actor
+    type: datastore
+    datastoreName: postgres
+spec:
+  type: ClusterIP
+  clusterIP: None
+  sessionAffinity: None
+  ports:
+    - name: pgql
+      port: 5432
+      protocol: TCP
+      targetPort: 5432
+  selector:
+    serviceName: actor
+    type: datastore
+    datastoreName: postgres
+---
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: postgres-actor
+  labels:
+    datastoreName: postgres
+    serviceName: actor
+    type: datastore
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      datastoreName: postgres
+      serviceName: actor
+      type: datastore
+  serviceName: postgres-actor
+  template:
+    metadata:
+      annotations:
+        pod.alpha.kubernetes.io/initialized: "true"
+      labels:
+        datastoreName: postgres
+        serviceName: actor
+        type: datastore
+      name: postgres-actor
+    spec:
+      containers:
+      - env:
+        - name: POSTGRES_USER
+          value: actor
+        - name: PGUSER
+          value: actor
+        - name: POSTGRES_DB
+          value: actor
+        - name: POSTGRES_INITDB_ARGS
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: postgres-actor-password
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.podIP
+        image: postgres:10.4
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - exec pg_isready --host $POD_IP
+          failureThreshold: 6
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        name: actor
+        ports:
+        - containerPort: 5432
+          name: pgql
+          protocol: TCP
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - exec pg_isready --host $POD_IP
+          failureThreshold: 3
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 3
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data/pgdata
+          name: data
+          subPath: postgresql-db
+      restartPolicy: Always
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+  updateStrategy:
+    type: OnDelete
+  volumeClaimTemplates:
+  - metadata:
+      annotations:
+        volume.alpha.kubernetes.io/storage-class: anything
+      name: data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 5Gi

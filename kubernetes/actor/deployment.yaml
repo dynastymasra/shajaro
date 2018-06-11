@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - name: actor
-        image: gcr.io/crypto-pulsar-194606/sirius/actor:develop
+        image: gcr.io/zeta-embassy-202304/shajaro/actor:develop
         ports:
         - name: http
           containerPort: 8080
