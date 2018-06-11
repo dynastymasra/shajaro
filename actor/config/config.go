@@ -16,7 +16,8 @@ var (
 	DatabaseMaxOpen  int
 	DatabaseMaxIdle  int
 
-	KongURL string
+	KongURL      string
+	KongAdminURL string
 )
 
 func setDefault() {
@@ -33,7 +34,8 @@ func setDefault() {
 	viper.SetDefault("DATABASE_MAX_OPEN", 25)
 	viper.SetDefault("DATABASE_MAX_IDLE", 2)
 
-	viper.SetDefault("KONG_URL", "http://localhost:8001")
+	viper.SetDefault("KONG_ADMIN_URL", "http://localhost:8001")
+	viper.SetDefault("KONG_URL", "https://localhost:8000")
 }
 
 func InitConfig() {
@@ -54,4 +56,5 @@ func InitConfig() {
 	DatabaseMaxIdle = viper.GetInt("DATABASE_MAX_IDLE")
 
 	KongURL = viper.GetString("KONG_URL")
+	KongAdminURL = viper.GetString("KONG_ADMIN_URL")
 }

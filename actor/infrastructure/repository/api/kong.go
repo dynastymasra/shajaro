@@ -37,7 +37,7 @@ func (kr KongRepository) CreateConsumer(consumer kong.Consumer) (*kong.Consumer,
 
 	pack := runtime.FuncForPC(reflect.ValueOf(kr.CreateConsumer).Pointer()).Name()
 	response := &kong.Consumer{}
-	url := config.KongURL + "/consumers"
+	url := config.KongAdminURL + "/consumers"
 	backOff := BackOffRetry()
 
 	operation := func() error {
@@ -86,7 +86,7 @@ func (kr KongRepository) CreateOauth(consumerID string, oauth kong.Oauth) (*kong
 
 	pack := runtime.FuncForPC(reflect.ValueOf(kr.CreateOauth).Pointer()).Name()
 	response := &kong.Oauth{}
-	url := config.KongURL + fmt.Sprintf("/consumers/%v/oauth2", consumerID)
+	url := config.KongAdminURL + fmt.Sprintf("/consumers/%v/oauth2", consumerID)
 	backOff := BackOffRetry()
 
 	operation := func() error {
@@ -111,7 +111,7 @@ func (kr KongRepository) CreateOauth(consumerID string, oauth kong.Oauth) (*kong
 			return errors.New(string(body))
 		}
 
-		log.Info(log.Msg("Success create new kong consumer", helper.Stringify(oauth)),
+		log.Info(log.Msg("Success create kong oauth", helper.Stringify(oauth)),
 			log.O("version", config.Version), log.O("package", pack), log.O("url", url),
 			log.O("project", config.ProjectName), log.O(config.TraceKey, kr.Ctx.Value(config.TraceKey)),
 			log.O("status_code", res.StatusCode), log.O("elapsed_time", backOff.GetElapsedTime()),
@@ -132,6 +132,54 @@ func (kr KongRepository) CreateOauth(consumerID string, oauth kong.Oauth) (*kong
 	return response, status, nil
 }
 
-func (kr KongRepository) GetOauthByName(consumer string, name domain.OauthName) ([]kong.Oauth, int, error) {
-	return nil, 0, nil
+func (kr KongRepository) GetOauthByName(consumerID string, name domain.OauthName) ([]kong.Oauth, int, error) {
+	var status int
+	response := struct {
+		Data []kong.Oauth `json:"data"`
+	}{}
+
+	pack := runtime.FuncForPC(reflect.ValueOf(kr.GetOauthByName).Pointer()).Name()
+	url := config.KongAdminURL + fmt.Sprintf("/consumers/%v/oauth2", consumerID)
+	backOff := BackOffRetry()
+
+	operation := func() error {
+		res, body, errs := gorequest.New().Get(url).Param("name", string(name)).EndStruct(&response)
+		if len(errs) > 0 {
+			log.Error(log.Msg("Error get oauth by name", errs[0].Error()), log.O("version", config.Version),
+				log.O("package", pack), log.O("project", config.ProjectName),
+				log.O("url", url), log.O(config.TraceKey, kr.Ctx.Value(config.TraceKey)),
+				log.O("consumer_id", consumerID), log.O("retry_in", backOff.NextBackOff()))
+			status = http.StatusInternalServerError
+			return errs[0]
+		}
+
+		if res.StatusCode >= http.StatusBadRequest {
+			log.Error(log.Msg("Failed get kong oauth by name", string(body)), log.O("version", config.Version),
+				log.O("package", pack), log.O("project", config.ProjectName),
+				log.O("url", url), log.O(config.TraceKey, kr.Ctx.Value(config.TraceKey)),
+				log.O("status_code", res.StatusCode), log.O("consumer_id", consumerID),
+				log.O("retry_in", backOff.NextBackOff()))
+			status = res.StatusCode
+			return errors.New(string(body))
+		}
+
+		log.Info(log.Msg("Success get kong oauth", helper.Stringify(response)),
+			log.O("version", config.Version), log.O("package", pack), log.O("url", url),
+			log.O("project", config.ProjectName), log.O(config.TraceKey, kr.Ctx.Value(config.TraceKey)),
+			log.O("status_code", res.StatusCode), log.O("elapsed_time", backOff.GetElapsedTime()),
+			log.O("consumer_id", consumerID))
+		status = res.StatusCode
+
+		return nil
+	}
+
+	if err := backoff.Retry(operation, backOff); err != nil {
+		log.Error(log.Msg("Failed retry get kong oauth", err.Error()), log.O("version", config.Version),
+			log.O("package", pack), log.O("project", config.ProjectName), log.O("url", url),
+			log.O("consumer_id", consumerID), log.O(config.TraceKey, kr.Ctx.Value(config.TraceKey)),
+			log.O("elapsed_time", backOff.GetElapsedTime()))
+		return nil, status, err
+	}
+
+	return response.Data, status, nil
 }

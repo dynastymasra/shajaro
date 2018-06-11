@@ -20,6 +20,10 @@ import (
 
 	"shajaro/actor/domain"
 
+	"shajaro/actor/infrastructure/repository/api"
+
+	"shajaro/actor/service"
+
 	log "github.com/dynastymasra/gochill"
 	"github.com/gin-gonic/gin"
 	"gopkg.in/go-playground/validator.v9"
@@ -105,5 +109,18 @@ func LoginController(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, helper.ObjectResponse(user))
+	kongRepository := api.NewKongRepository(c)
+	kongService := service.NewKongService(c, kongRepository, kongRepository)
+
+	oauth, status, err := kongService.LoginService(user.ConsumerID, login.OauthName)
+	if err != nil {
+		log.Error(log.Msg("Failed get kong oauth", err.Error()), log.O("version", config.Version),
+			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
+			log.O("package", pack), log.O("body", helper.Stringify(login)))
+		c.Error(err)
+		c.JSON(status, helper.FailResponse(err.Error()))
+		return
+	}
+
+	c.JSON(http.StatusOK, helper.ObjectResponse(oauth))
 }
