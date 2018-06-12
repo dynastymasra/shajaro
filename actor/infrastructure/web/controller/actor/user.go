@@ -24,6 +24,7 @@ import (
 
 	log "github.com/dynastymasra/gochill"
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 	"github.com/pkg/errors"
 	"github.com/satori/go.uuid"
 	"gopkg.in/go-playground/validator.v9"
@@ -129,4 +130,47 @@ func RegisterController(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, helper.ObjectResponse(user))
+}
+
+func GetUserByIDController(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+
+	pack := runtime.FuncForPC(reflect.ValueOf(GetUserByIDController).Pointer()).Name()
+	id := c.GetHeader(config.AuthUserID)
+
+	log.Info(log.Msg("Get user by id"), log.O("version", config.Version),
+		log.O("project", config.ProjectName), log.O("package", pack),
+		log.O(config.TraceKey, c.GetString(config.TraceKey)), log.O("id", id))
+
+	db, err := provider.ConnectSQL()
+	if err != nil {
+		log.Error(log.Msg("Failed connect database", err.Error()), log.O("version", config.Version),
+			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
+			log.O("package", pack))
+		c.Error(err)
+		c.JSON(http.StatusInternalServerError, helper.FailResponse(config.ErrDatabaseConnectFail))
+		return
+	}
+
+	actorRepository := sql.NewUserRepository(c, db)
+	user, err := actorRepository.GetUserByID(id)
+	if err == gorm.ErrRecordNotFound {
+		log.Error(log.Msg("User not found", err.Error()), log.O("version", config.Version),
+			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
+			log.O("package", pack), log.O("id", id))
+		c.Error(err)
+		c.JSON(http.StatusNotFound, helper.FailResponse("user not found"))
+		return
+	}
+
+	if err != nil {
+		log.Error(log.Msg("User not found", err.Error()), log.O("version", config.Version),
+			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
+			log.O("package", pack), log.O("id", id))
+		c.Error(err)
+		c.JSON(http.StatusInternalServerError, helper.FailResponse(config.ErrDatabaseConnectFail))
+		return
+	}
+
+	c.JSON(http.StatusOK, helper.ObjectResponse(user))
 }

@@ -9,8 +9,15 @@ const (
 
 	// Header name
 	HeaderRequestID = "X-Request-ID"
+	ScopeHeader     = "X-Authenticated-Scope"
+	AuthUserID      = "X-Authenticated-Userid"
 
 	CountryJSON = "countries.json"
+
+	ActorScopes = "actor.read actor.update actor.delete"
+	ActorRead   = "actor.read"
+	ActorUpdate = "actor.update"
+	ActorDelete = "actor.delete"
 
 	// Resource of error descriptions
 	ErrEndpointNotFound    = "endpoint your requested not found"

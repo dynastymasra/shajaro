@@ -18,6 +18,7 @@ var (
 
 	KongAuthURL  string
 	KongAdminURL string
+	ProvisionKey string
 )
 
 func setDefault() {
@@ -36,6 +37,7 @@ func setDefault() {
 
 	viper.SetDefault("KONG_ADMIN_URL", "http://localhost:8001")
 	viper.SetDefault("KONG_AUTH_URL", "https://localhost:8000")
+	viper.SetDefault("PROVISION_KEY", "RRHTRkHLf4ZRQx0ucfBQ49zAmGv30UeG")
 }
 
 func InitConfig() {
@@ -57,4 +59,5 @@ func InitConfig() {
 
 	KongAuthURL = viper.GetString("KONG_AUTH_URL")
 	KongAdminURL = viper.GetString("KONG_ADMIN_URL")
+	ProvisionKey = viper.GetString("PROVISION_KEY")
 }

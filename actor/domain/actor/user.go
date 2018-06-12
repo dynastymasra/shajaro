@@ -51,8 +51,9 @@ type (
 
 	Userer interface {
 		CheckEmailNotExist(string) bool
-		UserLogin(string, string) (*User, error)
 		CreateUser(User) error
+		GetUserByID(string) (*User, error)
+		UserLogin(string, string) (*User, error)
 	}
 )
 

@@ -47,3 +47,17 @@ func (ar ActorRepository) CheckEmailNotExist(email string) bool {
 	var user actor.User
 	return ar.DB.Where("email = ?", email).First(&user).RecordNotFound()
 }
+
+func (ar ActorRepository) GetUserByID(id string) (*actor.User, error) {
+	user := &actor.User{}
+
+	if err := ar.DB.Where("id = ?", id).First(user).Error; err != nil {
+		log.Error(log.Msg("Failed get user by id", err.Error()), log.O("version", config.Version),
+			log.O("project", config.ProjectName), log.O(config.TraceKey, ar.Ctx.Value(config.TraceKey)),
+			log.O("package", runtime.FuncForPC(reflect.ValueOf(ar.GetUserByID).Pointer()).Name()),
+			log.O("id", id))
+		return nil, err
+	}
+
+	return user, nil
+}

@@ -67,8 +67,10 @@ spec:
           value: '2'
         - name: KONG_ADMIN_URL
           value: http://kong:8001
-        - name: KONG_URL
-          value: https://auth.shajaro.com/oauth2/token
+        - name: KONG_AUTH_URL
+          value: https://auth.shajaro.com
+        - name: PROVISION_KEY
+          value: RRHTRkHLf4ZRQx0ucfBQ49zAmGv30UeG
         name: actor
         image: gcr.io/solid-terra-207000/actor:develop
         imagePullPolicy: Always

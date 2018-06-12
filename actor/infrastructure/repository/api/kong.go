@@ -183,3 +183,67 @@ func (kr KongRepository) GetOauthByName(consumerID string, name domain.OauthName
 
 	return response.Data, status, nil
 }
+
+func (kr KongRepository) GetAccessToken(clientID, clientSecret, scope, userID string) (*kong.AccessToken, int, error) {
+	var status int
+	body := struct {
+		ClientID            string `json:"client_id"`
+		ClientSecret        string `json:"client_secret"`
+		GrantType           string `json:"grant_type"`
+		Scope               string `json:"scope"`
+		ProvisionKey        string `json:"provision_key"`
+		AuthenticatedUserID string `json:"authenticated_userid"`
+	}{
+		ClientID:            clientID,
+		ClientSecret:        clientSecret,
+		GrantType:           "password",
+		Scope:               scope,
+		ProvisionKey:        config.ProvisionKey,
+		AuthenticatedUserID: userID,
+	}
+
+	pack := runtime.FuncForPC(reflect.ValueOf(kr.GetAccessToken).Pointer()).Name()
+	response := &kong.AccessToken{}
+	url := config.KongAuthURL + "/oauth2/token"
+	backOff := BackOffRetry()
+
+	operation := func() error {
+		res, body, errs := gorequest.New().Post(url).Send(body).EndStruct(response)
+		if len(errs) > 0 {
+			log.Error(log.Msg("Error get access token", errs[0].Error()), log.O("version", config.Version),
+				log.O("package", pack), log.O("project", config.ProjectName), log.O("scope", scope),
+				log.O("url", url), log.O(config.TraceKey, kr.Ctx.Value(config.TraceKey)),
+				log.O("retry_in", backOff.NextBackOff()), log.O("body", helper.Stringify(body)))
+			status = http.StatusInternalServerError
+			return errs[0]
+		}
+
+		if res.StatusCode >= http.StatusBadRequest {
+			log.Error(log.Msg("Failed access token", string(body)), log.O("version", config.Version),
+				log.O("package", pack), log.O("project", config.ProjectName), log.O("scope", scope),
+				log.O("url", url), log.O(config.TraceKey, kr.Ctx.Value(config.TraceKey)),
+				log.O("status_code", res.StatusCode), log.O("retry_in", backOff.NextBackOff()),
+				log.O("body", helper.Stringify(body)))
+			status = res.StatusCode
+			return errors.New(string(body))
+		}
+
+		log.Info(log.Msg("Success get access token", helper.Stringify(response)), log.O("body", helper.Stringify(body)),
+			log.O("version", config.Version), log.O("package", pack), log.O("url", url),
+			log.O("project", config.ProjectName), log.O(config.TraceKey, kr.Ctx.Value(config.TraceKey)),
+			log.O("status_code", res.StatusCode), log.O("elapsed_time", backOff.GetElapsedTime()))
+		status = res.StatusCode
+
+		return nil
+	}
+
+	if err := backoff.Retry(operation, backOff); err != nil {
+		log.Error(log.Msg("Failed retry get access token", err.Error()), log.O("version", config.Version),
+			log.O("package", pack), log.O("project", config.ProjectName), log.O("url", url),
+			log.O(config.TraceKey, kr.Ctx.Value(config.TraceKey)), log.O("elapsed_time", backOff.GetElapsedTime()),
+			log.O("body", helper.Stringify(body)))
+		return nil, status, err
+	}
+
+	return response, status, nil
+}

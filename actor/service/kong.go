@@ -76,7 +76,7 @@ func (ks *KongService) RegisterNewConsumer(consumer kong.Consumer) (*kong.Consum
 	return cons, status, nil
 }
 
-func (ks *KongService) LoginService(consumerID string, oauthName domain.OauthName) (*kong.Oauth, int, error) {
+func (ks *KongService) LoginService(consumerID, userID string, oauthName domain.OauthName) (*kong.AccessToken, int, error) {
 	pack := runtime.FuncForPC(reflect.ValueOf(ks.LoginService).Pointer()).Name()
 
 	res, status, err := ks.Oauther.GetOauthByName(consumerID, oauthName)
@@ -102,7 +102,7 @@ func (ks *KongService) LoginService(consumerID string, oauthName domain.OauthNam
 			log.Error(log.Msg("Failed create kong oauth", err.Error()), log.O("version", config.Version),
 				log.O("project", config.ProjectName), log.O(config.TraceKey, ks.Ctx.Value(config.TraceKey)),
 				log.O("package", pack), log.O("body", helper.Stringify(oauth)),
-				log.O("status_code", status))
+				log.O("status_code", status), log.O("consumer_id", consumerID))
 			return nil, status, err
 		}
 
@@ -112,13 +112,32 @@ func (ks *KongService) LoginService(consumerID string, oauthName domain.OauthNam
 			log.O("consumer_id", consumerID), log.O("body", helper.Stringify(auth)),
 			log.O("status_code", status))
 
-		return oauth, status, nil
+		accessToken, status, err := ks.Oauther.GetAccessToken(oauth.ClientID, oauth.ClientSecret, config.ActorScopes, userID)
+		if err != nil {
+			log.Error(log.Msg("Failed get access token", err.Error()), log.O("version", config.Version),
+				log.O("project", config.ProjectName), log.O(config.TraceKey, ks.Ctx.Value(config.TraceKey)),
+				log.O("package", pack), log.O("body", helper.Stringify(oauth)), log.O("user_id", userID),
+				log.O("status_code", status), log.O("consumer_id", consumerID),
+				log.O("oauth", helper.Stringify(oauth)))
+			return nil, status, err
+		}
+
+		return accessToken, status, nil
 	}
 
-	log.Info(log.Msg("Success get kong oauth", helper.Stringify(res)), log.O("version", config.Version),
+	accessToken, status, err := ks.Oauther.GetAccessToken(res[0].ClientID, res[0].ClientSecret, config.ActorScopes, userID)
+	if err != nil {
+		log.Error(log.Msg("Failed get access token", err.Error()), log.O("version", config.Version),
+			log.O("project", config.ProjectName), log.O(config.TraceKey, ks.Ctx.Value(config.TraceKey)),
+			log.O("package", pack), log.O("user_id", userID), log.O("status_code", status),
+			log.O("consumer_id", consumerID), log.O("oauth", helper.Stringify(res[0])))
+		return nil, status, err
+	}
+
+	log.Info(log.Msg("Success get access token", helper.Stringify(res)), log.O("version", config.Version),
 		log.O("project", config.ProjectName), log.O(config.TraceKey, ks.Ctx.Value(config.TraceKey)),
 		log.O("package", pack), log.O("consumer_id", consumerID), log.O("type", oauthName),
 		log.O("status_code", status))
 
-	return &res[0], status, nil
+	return accessToken, status, nil
 }
