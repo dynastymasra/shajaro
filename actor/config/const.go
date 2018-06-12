@@ -5,7 +5,7 @@ const (
 	ProjectName = "Shajaro"
 	AppName     = "Actor"
 	TraceKey    = "request_id"
-	RedirectURI = "https://www.sirius.co.id"
+	RedirectURI = "https://auth.shajaro.com"
 
 	// Header name
 	HeaderRequestID = "X-Request-ID"
