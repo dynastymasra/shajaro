@@ -17,6 +17,8 @@ RUN set -ex && apk add --update bash ca-certificates tzdata \
 # app
 WORKDIR /app
 COPY --from=builder /go/src/shajaro/actor/actor /app/
+COPY --from=builder /go/src/shajaro/actor/migration /app/migration
+COPY --from=builder /go/src/shajaro/actor/countries.json /app/
 ## runtime configs
 EXPOSE 8080
 ENTRYPOINT ./actor

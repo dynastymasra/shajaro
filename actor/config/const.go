@@ -1,7 +1,7 @@
 package config
 
 const (
-	Version     = "1.0.0-dev"
+	Version     = "1.0.0"
 	ProjectName = "Shajaro"
 	AppName     = "Actor"
 	TraceKey    = "request_id"

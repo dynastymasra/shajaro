@@ -68,7 +68,7 @@ func Migration(data *gorm.DB) error {
 
 	m, err := migrate.NewWithDatabaseInstance("file://migration", "postgres", driver)
 	if err != nil {
-		log.Error(log.Msg("Failed open database", err.Error()), log.O("version", config.Version),
+		log.Error(log.Msg("Failed migration data", err.Error()), log.O("version", config.Version),
 			log.O("package", runtime.FuncForPC(reflect.ValueOf(Migration).Pointer()).Name()),
 			log.O("project", config.ProjectName))
 		return err
