@@ -1,24 +1,24 @@
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  name: island
-#  labels:
-#    serviceName: island
-#    type: external
-#spec:
-#  type: NodePort
-#  ports:
-#  - name: http
-#    port: 80
-#    targetPort: 8080
-#    protocol: TCP
-#  - name: https
-#    port: 443
-#    targetPort: 8080
-#    protocol: TCP
-#  selector:
-#    serviceName: island
-#    type: app
+apiVersion: v1
+kind: Service
+metadata:
+  name: island
+  labels:
+    serviceName: island
+    type: external
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+    protocol: TCP
+  - name: https
+    port: 443
+    targetPort: 8080
+    protocol: TCP
+  selector:
+    serviceName: island
+    type: app
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -71,50 +71,27 @@ spec:
             path: /healthz
             port: http
 ---
-#apiVersion: extensions/v1beta1
-#kind: Ingress
-#metadata:
-#  annotations:
-#    kubernetes.io/tls-acme: "true"
-#    ingress.kubernetes.io/force-ssl-redirect: "true"
-#    ingress.kubernetes.io/ssl-redirect: "true"
-#  name: island
-#  labels:
-#    serviceName: island
-#    role: external
-#spec:
-#  tls:
-#  - secretName: auth-ssl
-#  rules:
-#  - host: island.shajaro.com
-#    http:
-#      paths:
-#      - backend:
-#          serviceName: island
-#          servicePort: http
-#  backend:
-#    serviceName: island
-#    servicePort: http
----
-apiVersion: v1
-kind: Service
+apiVersion: extensions/v1beta1
+kind: Ingress
 metadata:
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    ingress.kubernetes.io/ssl-redirect: "true"
   name: island
   labels:
     serviceName: island
-    type: external
+    role: external
 spec:
-  type: LoadBalancer
-  sessionAffinity: None
-  ports:
-  - name: http
-    port: 80
-    targetPort: 8080
-    protocol: TCP
-  - name: https
-    port: 443
-    targetPort: 8080
-    protocol: TCP
-  selector:
+  tls:
+  - secretName: auth-ssl
+  rules:
+  - host: island.shajaro.com
+    http:
+      paths:
+      - backend:
+          serviceName: island
+          servicePort: http
+  backend:
     serviceName: island
-    type: app
+    servicePort: http

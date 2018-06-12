@@ -68,7 +68,7 @@ spec:
         - name: KONG_ADMIN_URL
           value: http://kong:8001
         name: actor
-        image: gcr.io/zeta-embassy-202304/shajaro/actor:develop
+        image: gcr.io/solid-terra-207000/actor:develop
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
