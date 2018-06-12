@@ -50,7 +50,7 @@ spec:
       containers:
       - env:
         - name: GIN_MODE
-          value: release
+          value: debug
         - name: DATABASE_ADDRESS
           value: postgres-actor:5432
         - name: DATABASE_USERNAME
@@ -60,28 +60,30 @@ spec:
         - name: DATABASE_NAME
           value: actor
         - name: DATABASE_LOG
-          value: false
+          value: 'true'
         - name: DATABASE_MAX_OPEN
-          value: 25
+          value: '25'
         - name: DATABASE_MAX_IDLE
-          value: 2
+          value: '2'
         - name: KONG_ADMIN_URL
           value: http://kong:8001
+        - name: KONG_URL
+          value: https://auth.shajaro.com/oauth2/token
         name: actor
         image: gcr.io/solid-terra-207000/actor:develop
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - name: http
           containerPort: 8080
         livenessProbe:
           initialDelaySeconds: 60
-          periodSeconds: 10
+          periodSeconds: 30
           tcpSocket:
             port: http
         readinessProbe:
           initialDelaySeconds: 60
-          periodSeconds: 60
+          periodSeconds: 30
           httpGet:
-            path: /v1/ping
+            path: /v1/healthz
             port: http
       terminationGracePeriodSeconds: 30
