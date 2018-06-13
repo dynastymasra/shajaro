@@ -8,4 +8,4 @@ build-docker:
 	docker build -t $(IMAGE) -f Dockerfile .
 
 push-docker:
-	gcloud docker -- push $(IMAGE)
+	docker push $(IMAGE)

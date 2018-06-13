@@ -11,7 +11,6 @@ import (
 	"net/http"
 	"shajaro/actor/helper"
 
-	"crypto/sha512"
 	"fmt"
 	"shajaro/actor/infrastructure/provider"
 	"shajaro/actor/infrastructure/repository/sql"
@@ -73,9 +72,6 @@ func LoginController(c *gin.Context) {
 	}
 	login.OauthName = oauthName
 
-	h := sha512.New512_256()
-	password := fmt.Sprintf("%x", h.Sum([]byte(login.Password)))
-
 	db, err := provider.ConnectSQL()
 	if err != nil {
 		log.Error(log.Msg("Failed connect database", err.Error()), log.O("version", config.Version),
@@ -99,7 +95,7 @@ func LoginController(c *gin.Context) {
 		return
 	}
 
-	user, err := actorRepository.UserLogin(login.Email, password)
+	user, err := actorRepository.Login(login.Email)
 	if err != nil {
 		log.Error(log.Msg("Failed login user", err.Error()), log.O("version", config.Version),
 			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
@@ -109,10 +105,21 @@ func LoginController(c *gin.Context) {
 		return
 	}
 
-	kongRepository := api.NewKongRepository(c)
-	kongService := service.NewKongService(c, kongRepository, kongRepository)
+	if match := actor.CheckPasswordHash(login.Password, user.Password); !match {
+		log.Error(log.Msg("Password is not match"), log.O("version", config.Version),
+			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
+			log.O("package", pack), log.O("body", helper.Stringify(login)),
+			log.O("user", helper.Stringify(user)))
+		err := errors.New("invalid password")
+		c.Error(err)
+		c.JSON(http.StatusForbidden, helper.FailResponse(err.Error()))
+		return
+	}
 
-	oauth, status, err := kongService.LoginService(user.ConsumerID, user.ID, login.OauthName)
+	oauthRepository := api.NewOauthRepository(c)
+	oauthService := service.NewOauthService(c, oauthRepository)
+
+	oauth, status, err := oauthService.LoginService(user.ConsumerID, user.ID, login.OauthName)
 	if err != nil {
 		log.Error(log.Msg("Failed get access token", err.Error()), log.O("version", config.Version),
 			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),

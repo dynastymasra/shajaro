@@ -20,7 +20,9 @@ type (
 
 	Oauther interface {
 		CreateOauth(string, Oauth) (*Oauth, int, error)
+		DeleteOauth(string, string) (int, error)
 		GetAccessToken(clientID, clientSecret, scope, userID string) (*AccessToken, int, error)
+		GetAllOauth(string) ([]Oauth, int, error)
 		GetOauthByName(string, domain.OauthName) ([]Oauth, int, error)
 	}
 )

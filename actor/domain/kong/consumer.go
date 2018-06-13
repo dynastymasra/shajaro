@@ -9,5 +9,6 @@ type (
 
 	Konger interface {
 		CreateConsumer(Consumer) (*Consumer, int, error)
+		DeleteConsumer(string) (int, error)
 	}
 )

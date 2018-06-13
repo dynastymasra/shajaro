@@ -20,6 +20,10 @@ const (
 	OauthNameDesktop OauthName = "Desktop"
 )
 
+var (
+	OauthNames = []OauthName{OauthNameAndroid, OauthNameWeb, OauthNameIOS, OauthNameDesktop}
+)
+
 func GenderValidation(gender Gender) (Gender, error) {
 	switch strings.ToLower(string(gender)) {
 	case strings.ToLower(string(GenderMale)):

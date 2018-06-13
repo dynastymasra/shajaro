@@ -12,6 +12,7 @@ import (
 	"shajaro/actor/helper"
 
 	log "github.com/dynastymasra/gochill"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type (
@@ -51,9 +52,11 @@ type (
 
 	Userer interface {
 		CheckEmailNotExist(string) bool
-		CreateUser(User) error
+		Create(User) error
+		Delete(User) error
 		GetUserByID(string) (*User, error)
-		UserLogin(string, string) (*User, error)
+		Update(User) (*User, error)
+		Login(string) (*User, error)
 	}
 )
 
@@ -118,4 +121,14 @@ func (u *Address) Scan(value interface{}) error {
 		return err
 	}
 	return nil
+}
+
+func HashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+	return string(bytes), err
+}
+
+func CheckPasswordHash(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
 }

@@ -8,9 +8,10 @@ const (
 	RedirectURI = "https://auth.shajaro.com"
 
 	// Header name
-	HeaderRequestID = "X-Request-ID"
-	ScopeHeader     = "X-Authenticated-Scope"
-	AuthUserID      = "X-Authenticated-Userid"
+	HeaderRequestID  = "X-Request-ID"
+	ScopeHeader      = "X-Authenticated-Scope"
+	AuthUserIDHeader = "X-Authenticated-Userid"
+	ConsumerIDHeader = "X-Consumer-Id"
 
 	CountryJSON = "countries.json"
 

@@ -16,7 +16,7 @@ func ActorRouter(router *gin.RouterGroup) {
 	router.GET("/countries", actor.CountryListController)
 	router.GET("/actor", middleware.ValidateScope(config.ActorRead), actor.GetUserByIDController)
 
-	router.PUT("/actor", middleware.ValidateScope(config.ActorUpdate), actor.CountryListController)
+	router.PUT("/actor", middleware.ValidateScope(config.ActorUpdate), actor.UpdateUserController)
 
-	router.DELETE("/actor", middleware.ValidateScope(config.ActorDelete), actor.CountryListController)
+	router.DELETE("/actor", middleware.ValidateScope(config.ActorDelete), actor.DeleteUserController)
 }
