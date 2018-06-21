@@ -1,5 +1,5 @@
-hash: 391330265f831fe73aea76d31cd7f998438935a7a154434f3f177c926395c015
-updated: 2018-05-24T09:19:36.395473+07:00
+hash: 2fd6e321a37c59efc80899f8f396188744cb24ec62d8510bf66ad26820d8b35d
+updated: 2018-06-21T13:34:41.80306+07:00
 imports:
 - name: github.com/bitly/go-simplejson
   version: 0c965951289cce37dec52ad1f34200fefc816777
@@ -98,10 +98,13 @@ imports:
 - name: golang.org/x/crypto
   version: 0fcca4842a8d74bfddc2c96a073bd2a4d2a7a2e8
   subpackages:
+  - bcrypt
+  - blowfish
   - ssh/terminal
 - name: golang.org/x/net
   version: d866cfc389cec985d6fda2859936a575a55a3ab6
   subpackages:
+  - context
   - publicsuffix
 - name: golang.org/x/sys
   version: 83801418e1b59fb1880e363299581ee543af32ca
@@ -113,6 +116,8 @@ imports:
   subpackages:
   - transform
   - unicode/norm
+- name: google.golang.org/grpc
+  version: b519e3d28d377e55a0d44c9b83e6aee4d02d731d
 - name: gopkg.in/go-playground/validator.v8
   version: 5f1438d3fca68893a817e4a66806cea46a9e4ebf
 - name: gopkg.in/go-playground/validator.v9

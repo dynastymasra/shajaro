@@ -1,7 +1,7 @@
 package helper_test
 
 import (
-	"sirius/actor/helper"
+	"shajaro/actor/helper"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
