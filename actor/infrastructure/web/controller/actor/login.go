@@ -78,7 +78,7 @@ func LoginController(c *gin.Context) {
 			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
 			log.O("package", pack), log.O("body", helper.Stringify(login)))
 		c.Error(err)
-		c.JSON(http.StatusInternalServerError, helper.FailResponse(config.ErrDatabaseConnectFail))
+		c.JSON(http.StatusInternalServerError, helper.FailResponse(err.Error()))
 		return
 	}
 
@@ -101,7 +101,7 @@ func LoginController(c *gin.Context) {
 			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
 			log.O("package", pack), log.O("body", helper.Stringify(login)))
 		c.Error(err)
-		c.JSON(http.StatusUnauthorized, helper.FailResponse(config.ErrFailedLogin))
+		c.JSON(http.StatusUnauthorized, helper.FailResponse(err.Error()))
 		return
 	}
 

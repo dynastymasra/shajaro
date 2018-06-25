@@ -1,14 +1,14 @@
 package kong
 
 type (
-	Consumer struct {
+	Kong struct {
 		ID       string `json:"id,omitempty"`
 		Username string `json:"username"`
 		CustomID string `json:"custom_id"`
 	}
 
-	Konger interface {
-		CreateConsumer(Consumer) (*Consumer, int, error)
+	Consumer interface {
+		CreateConsumer(Kong) (*Kong, int, error)
 		DeleteConsumer(string) (int, error)
 	}
 )

@@ -21,12 +21,8 @@ const (
 	ActorDelete = "actor.delete"
 
 	// Resource of error descriptions
-	ErrEndpointNotFound    = "endpoint your requested not found"
-	ErrDatabaseNil         = "database object is nil"
-	ErrDatabaseConnectFail = "failed connected to database"
-	ErrPingDatabaseFail    = "ping database connection failed"
-	ErrFailedSaveNewUser   = "failed to save new user"
-	ErrFailedLogin         = "failed login user, check your email and password"
+	ErrEndpointNotFound = "endpoint your requested not found"
+	ErrDatabaseNil      = "database object is nil"
 
 	ErrCastingData = "failed casting data type"
 )

@@ -12,21 +12,21 @@ import (
 )
 
 type UserService struct {
-	Ctx    context.Context
-	Userer actor.Userer
+	Ctx  context.Context
+	User actor.User
 }
 
-func NewUserService(ctx context.Context, userer actor.Userer) UserService {
+func NewUserService(ctx context.Context, user actor.User) UserService {
 	return UserService{
-		Ctx:    ctx,
-		Userer: userer,
+		Ctx:  ctx,
+		User: user,
 	}
 }
 
-func (us *UserService) UpdateService(data actor.User) (*actor.User, error) {
+func (us *UserService) UpdateService(data actor.Actor) (*actor.Actor, error) {
 	pack := runtime.FuncForPC(reflect.ValueOf(us.UpdateService).Pointer()).Name()
 
-	_, err := us.Userer.GetUserByID(data.ID)
+	user, err := us.User.GetUserByID(data.ID)
 	if err != nil {
 		log.Error(log.Msg("Failed get user by id", err.Error()), log.O("version", config.Version),
 			log.O("project", config.ProjectName), log.O(config.TraceKey, us.Ctx.Value(config.TraceKey)),
@@ -34,7 +34,8 @@ func (us *UserService) UpdateService(data actor.User) (*actor.User, error) {
 		return nil, err
 	}
 
-	result, err := us.Userer.Update(data)
+	data.Password = user.Password
+	result, err := us.User.Update(data)
 	if err != nil {
 		log.Error(log.Msg("Failed update user", err.Error()), log.O("version", config.Version),
 			log.O("project", config.ProjectName), log.O(config.TraceKey, us.Ctx.Value(config.TraceKey)),
@@ -48,7 +49,7 @@ func (us *UserService) UpdateService(data actor.User) (*actor.User, error) {
 func (us *UserService) DeleteService(id string) error {
 	pack := runtime.FuncForPC(reflect.ValueOf(us.DeleteService).Pointer()).Name()
 
-	user, err := us.Userer.GetUserByID(id)
+	user, err := us.User.GetUserByID(id)
 	if err != nil {
 		log.Error(log.Msg("Failed get user by id", err.Error()), log.O("version", config.Version),
 			log.O("project", config.ProjectName), log.O(config.TraceKey, us.Ctx.Value(config.TraceKey)),
@@ -56,7 +57,7 @@ func (us *UserService) DeleteService(id string) error {
 		return err
 	}
 
-	if err := us.Userer.Delete(*user); err != nil {
+	if err := us.User.Delete(*user); err != nil {
 		log.Error(log.Msg("Failed delete user", err.Error()), log.O("version", config.Version),
 			log.O("project", config.ProjectName), log.O(config.TraceKey, us.Ctx.Value(config.TraceKey)),
 			log.O("package", pack), log.O("user", helper.Stringify(user)))

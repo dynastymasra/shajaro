@@ -16,7 +16,7 @@ import (
 )
 
 type (
-	User struct {
+	Actor struct {
 		ID         string        `json:"id,omitempty" validate:"omitempty,uuid4" sql:"type:uuid" gorm:"column:id;primary_key"`
 		ConsumerID string        `json:"consumer_id,omitempty" validate:"omitempty,uuid4" sql:"type:uuid" gorm:"column:consumer_id;unique"`
 		FirstName  string        `json:"first_name" validate:"required" gorm:"not null;column:first_name"`
@@ -27,7 +27,7 @@ type (
 		Address    Address       `json:"address" validate:"required"  sql:"type:jsonb" gorm:"not null;column:address"`
 		Gender     domain.Gender `json:"gender" validate:"required" gorm:"not null;column:gender"`
 		Email      string        `json:"email" validate:"email,required" gorm:"unique;not null;column:email"`
-		Password   string        `json:"password" validate:"required" gorm:"not null;column:password"`
+		Password   string        `json:"password,omitempty" validate:"omitempty" gorm:"not null;column:password"`
 		BirthDate  string        `json:"birth_date" validate:"required" gorm:"not null;column:birth_date"`
 	}
 
@@ -50,17 +50,18 @@ type (
 		Country    string `json:"country" validate:"required" `
 	}
 
-	Userer interface {
+	User interface {
 		CheckEmailNotExist(string) bool
-		Create(User) error
-		Delete(User) error
-		GetUserByID(string) (*User, error)
-		Update(User) (*User, error)
-		Login(string) (*User, error)
+		Create(Actor) error
+		Delete(Actor) error
+		GetUserByID(string) (*Actor, error)
+		Update(Actor) (*Actor, error)
+		UpdatePassword(Actor, string) error
+		Login(string) (*Actor, error)
 	}
 )
 
-func (User) TableName() string {
+func (Actor) TableName() string {
 	return "users"
 }
 

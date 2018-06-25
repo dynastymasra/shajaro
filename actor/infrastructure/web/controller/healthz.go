@@ -28,7 +28,7 @@ func HealthzController(c *gin.Context) {
 			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
 			log.O("package", runtime.FuncForPC(reflect.ValueOf(HealthzController).Pointer()).Name()))
 		c.Error(err)
-		c.JSON(http.StatusInternalServerError, helper.FailResponse(config.ErrDatabaseConnectFail))
+		c.JSON(http.StatusInternalServerError, helper.FailResponse(err.Error()))
 		return
 	}
 
@@ -37,7 +37,7 @@ func HealthzController(c *gin.Context) {
 			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
 			log.O("package", runtime.FuncForPC(reflect.ValueOf(HealthzController).Pointer()).Name()))
 		c.Error(err)
-		c.JSON(http.StatusInternalServerError, helper.FailResponse(config.ErrPingDatabaseFail))
+		c.JSON(http.StatusInternalServerError, helper.FailResponse(err.Error()))
 		return
 	}
 

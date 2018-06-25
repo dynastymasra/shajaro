@@ -25,6 +25,7 @@ func Run() {
 	router := gin.Default()
 
 	router.Use(middleware.RequestKey())
+	router.Use(middleware.RequestType())
 
 	router.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, helper.FailResponse(config.ErrEndpointNotFound))

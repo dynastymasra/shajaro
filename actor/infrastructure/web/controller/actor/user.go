@@ -31,7 +31,7 @@ import (
 )
 
 func RegisterController(c *gin.Context) {
-	var user actor.User
+	var user actor.Actor
 
 	c.Header("Content-Type", "application/json")
 
@@ -80,7 +80,7 @@ func RegisterController(c *gin.Context) {
 			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
 			log.O("package", pack), log.O("body", helper.Stringify(user)))
 		c.Error(err)
-		c.JSON(http.StatusInternalServerError, helper.FailResponse(config.ErrDatabaseConnectFail))
+		c.JSON(http.StatusInternalServerError, helper.FailResponse(err.Error()))
 		return
 	}
 
@@ -110,7 +110,7 @@ func RegisterController(c *gin.Context) {
 	user.Password = password
 
 	consumerRepository := api.NewConsumerRepository(c)
-	consumer := kong.Consumer{
+	consumer := kong.Kong{
 		CustomID: user.ID,
 		Username: user.Email,
 	}
@@ -160,10 +160,9 @@ func RegisterController(c *gin.Context) {
 			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
 			log.O("package", pack), log.O("body", helper.Stringify(user)))
 		c.Error(err)
-		c.JSON(status, helper.FailResponse(config.ErrFailedSaveNewUser))
+		c.JSON(status, helper.FailResponse(err.Error()))
 		return
 	}
-	user.Password = ""
 
 	c.JSON(http.StatusCreated, helper.ObjectResponse(user))
 }
@@ -184,7 +183,7 @@ func GetUserByIDController(c *gin.Context) {
 			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
 			log.O("package", pack))
 		c.Error(err)
-		c.JSON(http.StatusInternalServerError, helper.FailResponse(config.ErrDatabaseConnectFail))
+		c.JSON(http.StatusInternalServerError, helper.FailResponse(err.Error()))
 		return
 	}
 
@@ -204,16 +203,15 @@ func GetUserByIDController(c *gin.Context) {
 			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
 			log.O("package", pack), log.O("id", id))
 		c.Error(err)
-		c.JSON(http.StatusInternalServerError, helper.FailResponse(config.ErrDatabaseConnectFail))
+		c.JSON(http.StatusInternalServerError, helper.FailResponse(err.Error()))
 		return
 	}
-	user.Password = ""
 
 	c.JSON(http.StatusOK, helper.ObjectResponse(user))
 }
 
 func UpdateUserController(c *gin.Context) {
-	var user actor.User
+	var user actor.Actor
 
 	c.Header("Content-Type", "application/json")
 
@@ -264,20 +262,10 @@ func UpdateUserController(c *gin.Context) {
 			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
 			log.O("package", pack), log.O("body", helper.Stringify(user)))
 		c.Error(err)
-		c.JSON(http.StatusInternalServerError, helper.FailResponse(config.ErrDatabaseConnectFail))
+		c.JSON(http.StatusInternalServerError, helper.FailResponse(err.Error()))
 		return
 	}
 
-	password, err := actor.HashPassword(user.Password)
-	if err != nil {
-		log.Error(log.Msg("Failed to hash password", err.Error()), log.O("version", config.Version),
-			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
-			log.O("package", pack), log.O("body", helper.Stringify(user)))
-		c.Error(err)
-		c.JSON(http.StatusBadRequest, helper.FailResponse(err.Error()))
-		return
-	}
-	user.Password = password
 	user.ID = id
 	user.ConsumerID = consumerId
 
@@ -298,10 +286,9 @@ func UpdateUserController(c *gin.Context) {
 			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
 			log.O("package", pack), log.O("body", helper.Stringify(user)))
 		c.Error(err)
-		c.JSON(http.StatusInternalServerError, helper.FailResponse(config.ErrDatabaseConnectFail))
+		c.JSON(http.StatusInternalServerError, helper.FailResponse(err.Error()))
 		return
 	}
-	result.Password = ""
 
 	c.JSON(http.StatusOK, helper.ObjectResponse(result))
 }
@@ -323,7 +310,7 @@ func DeleteUserController(c *gin.Context) {
 			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
 			log.O("package", pack), log.O("consumer_id", consumerId), log.O("id", id))
 		c.Error(err)
-		c.JSON(http.StatusInternalServerError, helper.FailResponse(config.ErrDatabaseConnectFail))
+		c.JSON(http.StatusInternalServerError, helper.FailResponse(err.Error()))
 		return
 	}
 
@@ -344,7 +331,7 @@ func DeleteUserController(c *gin.Context) {
 			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
 			log.O("package", pack), log.O("id", id), log.O("consumer_id", consumerId))
 		c.Error(err)
-		c.JSON(http.StatusInternalServerError, helper.FailResponse(config.ErrDatabaseConnectFail))
+		c.JSON(http.StatusInternalServerError, helper.FailResponse(err.Error()))
 		return
 	}
 

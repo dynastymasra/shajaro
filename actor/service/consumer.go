@@ -6,13 +6,13 @@ import (
 )
 
 type ConsumerService struct {
-	Ctx    context.Context
-	Konger kong.Konger
+	Ctx      context.Context
+	Consumer kong.Consumer
 }
 
-func NewConsumerService(ctx context.Context, konger kong.Konger) ConsumerService {
+func NewConsumerService(ctx context.Context, consumer kong.Consumer) ConsumerService {
 	return ConsumerService{
-		Ctx:    ctx,
-		Konger: konger,
+		Ctx:      ctx,
+		Consumer: consumer,
 	}
 }

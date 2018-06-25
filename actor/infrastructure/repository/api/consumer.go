@@ -27,11 +27,11 @@ func NewConsumerRepository(ctx context.Context) ConsumerRepository {
 	}
 }
 
-func (cr ConsumerRepository) CreateConsumer(consumer kong.Consumer) (*kong.Consumer, int, error) {
+func (cr ConsumerRepository) CreateConsumer(consumer kong.Kong) (*kong.Kong, int, error) {
 	var status int
 
 	pack := runtime.FuncForPC(reflect.ValueOf(cr.CreateConsumer).Pointer()).Name()
-	response := &kong.Consumer{}
+	response := &kong.Kong{}
 	url := config.KongAdminURL + "/consumers"
 	backOff := BackOffRetry()
 
