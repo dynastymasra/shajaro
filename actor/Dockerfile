@@ -2,11 +2,12 @@ FROM golang:1.10.3-alpine AS builder
 WORKDIR /go/src/shajaro/actor
 # install dependecies
 RUN set -ex \
-    && apk add --update bash git glide \
+    && apk add --update bash git curl \
+    && curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh \
     && git config --global http.https://gopkg.in.followRedirects true \
     && rm -rf /var/cache/apk/*
-COPY . glide.lock glide.yaml ./
-RUN glide install
+COPY . Gopkg.lock Gopkg.toml ./
+RUN dep ensure -v
 
 ## build linux app source code
 RUN GOOS=linux go build -tags=main -o actor

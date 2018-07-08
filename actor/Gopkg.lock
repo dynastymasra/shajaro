@@ -275,7 +275,7 @@
     "idna",
     "publicsuffix"
   ]
-  revision = "ed29d75add3d7c4bf7ca65aac0c6df3d1420216f"
+  revision = "32a936f46389aa10549d60bd7833e54b01685d09"
 
 [[projects]]
   branch = "master"
@@ -284,7 +284,7 @@
     "unix",
     "windows"
   ]
-  revision = "151529c776cdc58ddbe7963ba9af779f3577b419"
+  revision = "3c6ecd8f22c6f40fbeec94c000a069d7d87c7624"
 
 [[projects]]
   name = "golang.org/x/text"
@@ -320,6 +320,12 @@
   version = "v9.19.0"
 
 [[projects]]
+  name = "gopkg.in/tylerb/graceful.v1"
+  packages = ["."]
+  revision = "4654dfbb6ad53cb5e27f37d99b02e16c1872fbbb"
+  version = "v1.2.15"
+
+[[projects]]
   name = "gopkg.in/yaml.v2"
   packages = ["."]
   revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
@@ -328,6 +334,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "f9f1ba70ea5f8fc207d43672df403e0c9cfdec57944b6af27d7a72266336cd63"
+  inputs-digest = "92c308c9cd575f2d1f0c9be593660788a665e0d75e1bb32150800f776349ae07"
   solver-name = "gps-cdcl"
   solver-version = 1
