@@ -116,6 +116,8 @@ spec:
     spec:
       accessModes:
       - ReadWriteOnce
+      # This used for reclaim policy Retain or Delete
+      # persistentVolumeReclaimPolicy: Retain
       resources:
         requests:
           storage: 5Gi
