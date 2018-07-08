@@ -27,14 +27,31 @@ func Router() *mux.Router {
 	router.HandleFunc("/v1/healthz", controller.HealthzController).Methods(http.MethodGet)
 	router.HandleFunc("/v1/healthz", controller.HealthzController).Methods(http.MethodHead)
 
-	router.Handle("/v1/countries", negroni.New(
-		negroni.HandlerFunc(middleware.ValidateScope(config.ActorRead)),
-		negroni.WrapFunc(actor.CountryListController),
-	)).Methods(http.MethodGet)
+	router.HandleFunc("/v1/countries", actor.CountryListController).Methods(http.MethodGet)
 
 	router.HandleFunc("/v1/register", actor.RegisterController).Methods(http.MethodPost)
 
 	router.HandleFunc("/v1/login", actor.LoginController).Methods(http.MethodPost)
+
+	router.Handle("/v1/actor", negroni.New(
+		negroni.HandlerFunc(middleware.ValidateScope(config.ActorRead)),
+		negroni.WrapFunc(actor.GetUserByIDController),
+	)).Methods(http.MethodGet)
+
+	router.Handle("/v1/actor", negroni.New(
+		negroni.HandlerFunc(middleware.ValidateScope(config.ActorUpdate)),
+		negroni.WrapFunc(actor.UpdateUserController),
+	)).Methods(http.MethodPut)
+
+	router.Handle("/v1/password", negroni.New(
+		negroni.HandlerFunc(middleware.ValidateScope(config.ActorUpdate)),
+		negroni.WrapFunc(actor.UpdatePasswordController),
+	)).Methods(http.MethodPut)
+
+	router.Handle("/v1/actor", negroni.New(
+		negroni.HandlerFunc(middleware.ValidateScope(config.ActorDelete)),
+		negroni.WrapFunc(actor.DeleteUserController),
+	)).Methods(http.MethodDelete)
 
 	return router
 }
