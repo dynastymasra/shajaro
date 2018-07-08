@@ -8,33 +8,40 @@ import (
 
 	"strings"
 
-	"github.com/gin-gonic/gin"
+	"context"
+
+	"fmt"
+
 	"github.com/labstack/gommon/random"
+	"github.com/urfave/negroni"
 )
 
-func RequestKey() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		requestID := c.Request.Header.Get(config.HeaderRequestID)
-		if len(requestID) > 0 {
-			c.Set(config.TraceKey, requestID)
-			c.Next()
+func TraceKey() negroni.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
+		traceKey := r.Header.Get(config.HeaderTraceID)
+		if len(traceKey) > 0 {
+			ctx := context.WithValue(r.Context(), config.TraceKey, traceKey)
+			next(w, r.WithContext(ctx))
+		} else {
+			ctx := context.WithValue(r.Context(), config.TraceKey, random.String(11))
+			next(w, r.WithContext(ctx))
 		}
-		c.Set(config.TraceKey, random.String(11))
-		c.Next()
 	}
 }
 
-func RequestType() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		contentType := c.Request.Header.Get("Content-Type")
-		httpMethod := c.Request.Method
+func RequestType() negroni.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
+		contentType := r.Header.Get("Content-Type")
+		httpMethod := r.Method
 
 		if httpMethod == http.MethodPost || httpMethod == http.MethodPut {
 			if !strings.Contains(contentType, "application/json") {
-				c.JSON(http.StatusUnsupportedMediaType, helper.FailResponse("content type is not supported"))
-				c.Abort()
+				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(http.StatusUnsupportedMediaType)
+				fmt.Fprintf(w, helper.FailResponse("content type is not supported").Stringify())
+				return
 			}
 		}
-		c.Next()
+		next(w, r)
 	}
 }

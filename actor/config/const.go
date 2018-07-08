@@ -4,11 +4,11 @@ const (
 	Version     = "1.0.0"
 	ProjectName = "Shajaro"
 	AppName     = "Actor"
-	TraceKey    = "request_id"
+	TraceKey    = "trace_id"
 	RedirectURI = "https://auth.shajaro.com"
 
 	// Header name
-	HeaderRequestID  = "X-Request-ID"
+	HeaderTraceID    = "X-Trace-ID"
 	ScopeHeader      = "X-Authenticated-Scope"
 	AuthUserIDHeader = "X-Authenticated-Userid"
 	ConsumerIDHeader = "X-Consumer-Id"

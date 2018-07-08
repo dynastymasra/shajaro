@@ -1,5 +1,14 @@
 package helper
 
+import (
+	"encoding/json"
+	"reflect"
+	"runtime"
+	"shajaro/actor/config"
+
+	log "github.com/dynastymasra/gochill"
+)
+
 //Jsend used to format JSON with jsend rules
 type Jsend struct {
 	Status  string      `json:"status" binding:"required"`
@@ -20,4 +29,16 @@ func SuccessResponse() Jsend {
 // ObjectResponse used to return response JSON format if have data value
 func ObjectResponse(data interface{}) Jsend {
 	return Jsend{Status: "success", Data: data}
+}
+
+// Stringify used to stringify json object
+func (j Jsend) Stringify() string {
+	toJSON, err := json.Marshal(j)
+	if err != nil {
+		log.Error(log.Msg("Unable to stringify JSON", err.Error()), log.O("version", config.Version),
+			log.O("project", config.ProjectName),
+			log.O("package", runtime.FuncForPC(reflect.ValueOf(j.Stringify).Pointer()).Name()))
+		return ""
+	}
+	return string(toJSON)
 }

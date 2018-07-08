@@ -34,8 +34,12 @@ version = "0.1.0"
   name = "github.com/dynastymasra/gochill"
 
 [[constraint]]
-  name = "github.com/gin-gonic/gin"
-  version = "1.2.0"
+  name = "github.com/urfave/negroni"
+  version = "^0.3.0"
+
+[[constraint]]
+  name = "github.com/gorilla/mux"
+  version = "^1.6.2"
 
 [[constraint]]
   name = "github.com/labstack/gommon"
@@ -68,6 +72,10 @@ version = "0.1.0"
 [[constraint]]
   name = "gopkg.in/go-playground/validator.v9"
   version = "9.9.1"
+
+[[constraint]]
+  name = "gopkg.in/tylerb/graceful.v1"
+  version = "^1.2.15"
 
 [prune]
   go-tests = true

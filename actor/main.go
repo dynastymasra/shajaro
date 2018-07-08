@@ -16,6 +16,7 @@ import (
 	"shajaro/actor/infrastructure/provider"
 
 	log "github.com/dynastymasra/gochill"
+	"gopkg.in/tylerb/graceful.v1"
 )
 
 func init() {
@@ -52,16 +53,20 @@ func main() {
 	log.Info(log.Msg("Running migration success"), log.O("package", pack), log.O("version", config.Version),
 		log.O("project", config.ProjectName))
 
-	go web.Run()
+	server := &graceful.Server{
+		Timeout: 0,
+	}
+	go web.Run(server)
 
 	log.Info(log.Msg("Application start running"), log.O("package", pack), log.O("version", config.Version),
 		log.O("project", config.ProjectName))
 
 	select {
 	case sig := <-stop:
-		log.Warn(log.Msg("Application prepare to shutdown", fmt.Sprintf("%+v", sig)),
-			log.O("package", pack), log.O("project", config.ProjectName), log.O("version", config.Version))
 		provider.CloseDB(db)
+		<-server.StopChan()
+		log.Warn(log.Msg("Shutdown the service", fmt.Sprintf("%+v", sig)),
+			log.O("package", pack), log.O("project", config.ProjectName), log.O("version", config.Version))
 		os.Exit(0)
 	}
 }

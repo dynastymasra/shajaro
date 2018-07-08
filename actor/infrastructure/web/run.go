@@ -1,42 +1,46 @@
 package web
 
 import (
-	"net/http"
 	"shajaro/actor/config"
-	"shajaro/actor/helper"
-	"shajaro/actor/infrastructure/web/middleware"
-	"shajaro/actor/infrastructure/web/route"
-
-	"github.com/gin-gonic/gin"
 
 	"reflect"
 	"runtime"
 
+	"github.com/urfave/negroni"
+
+	"net/http"
+	"os"
+
+	"shajaro/actor/infrastructure/web/middleware"
+
 	log "github.com/dynastymasra/gochill"
+	"gopkg.in/tylerb/graceful.v1"
 )
 
-func Run() {
+func Run(server *graceful.Server) {
 	pack := runtime.FuncForPC(reflect.ValueOf(Run).Pointer()).Name()
 
 	log.Info(log.Msg("Start run web application"), log.O("package", pack),
 		log.O("version", config.Version), log.O("project", config.ProjectName))
 
-	gin.SetMode(config.GinMode)
-	router := gin.Default()
+	muxRouter := Router()
 
-	router.Use(middleware.RequestKey())
-	router.Use(middleware.RequestType())
+	n := negroni.New(negroni.NewRecovery())
 
-	router.NoRoute(func(c *gin.Context) {
-		c.JSON(http.StatusNotFound, helper.FailResponse(config.ErrEndpointNotFound))
-		return
-	})
+	n.Use(middleware.RequestType())
+	n.Use(middleware.TraceKey())
+	n.Use(middleware.HTTPStatLogger())
 
-	v1 := router.Group("/v1")
-	{
-		route.ControllerRouter(v1)
-		route.ActorRouter(v1)
+	n.UseHandlerFunc(muxRouter.ServeHTTP)
+
+	server.Server = &http.Server{
+		Addr:    config.Address,
+		Handler: n,
 	}
 
-	router.Run(config.Address)
+	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		log.Alert(log.Msg("Failed to start server", err.Error()), log.O("package", pack),
+			log.O("version", config.Version), log.O("project", config.ProjectName))
+		os.Exit(1)
+	}
 }

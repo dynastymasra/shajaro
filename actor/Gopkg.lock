@@ -75,6 +75,18 @@
   version = "v1.1.0"
 
 [[projects]]
+  name = "github.com/gorilla/context"
+  packages = ["."]
+  revision = "08b5f424b9271eedf6f9f0ce86cb9396ed337a42"
+  version = "v1.1.1"
+
+[[projects]]
+  name = "github.com/gorilla/mux"
+  packages = ["."]
+  revision = "e3702bed27f0d39777b0b37b664b6280e8ef8fbf"
+  version = "v1.6.2"
+
+[[projects]]
   branch = "master"
   name = "github.com/hashicorp/hcl"
   packages = [
@@ -240,6 +252,12 @@
   version = "v1.1.1"
 
 [[projects]]
+  name = "github.com/urfave/negroni"
+  packages = ["."]
+  revision = "5dbbc83f748fc3ad38585842b0aedab546d0ea1e"
+  version = "v0.3.0"
+
+[[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
   packages = [
@@ -310,6 +328,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "c62b240c8f9ec4c6531d5fe67b9cd446585ff1198bbbe316958de7d72913fffc"
+  inputs-digest = "f9f1ba70ea5f8fc207d43672df403e0c9cfdec57944b6af27d7a72266336cd63"
   solver-name = "gps-cdcl"
   solver-version = 1
