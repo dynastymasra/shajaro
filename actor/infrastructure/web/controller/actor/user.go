@@ -25,51 +25,51 @@ import (
 	log "github.com/dynastymasra/gochill"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
-	"github.com/pkg/errors"
 	"github.com/satori/go.uuid"
 	"gopkg.in/go-playground/validator.v9"
 )
 
-func RegisterController(c *gin.Context) {
+func RegisterController(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	var user actor.Actor
 
-	c.Header("Content-Type", "application/json")
-
 	buf := new(bytes.Buffer)
-	buf.ReadFrom(c.Request.Body)
+	buf.ReadFrom(r.Body)
 	reqBody := buf.String()
+	traceKey := r.Context().Value(config.TraceKey)
 	pack := runtime.FuncForPC(reflect.ValueOf(RegisterController).Pointer()).Name()
 
 	log.Info(log.Msg("Request create user", reqBody), log.O("version", config.Version),
 		log.O("project", config.ProjectName), log.O("package", pack),
-		log.O(config.TraceKey, c.GetString(config.TraceKey)))
+		log.O(config.TraceKey, traceKey))
 
 	if err := json.Unmarshal([]byte(reqBody), &user); err != nil {
 		log.Error(log.Msg("Failed unmarshal body", err.Error()), log.O("version", config.Version),
-			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
+			log.O("project", config.ProjectName), log.O(config.TraceKey, traceKey),
 			log.O("package", pack), log.O("body", reqBody))
-		c.Error(err)
-		c.JSON(http.StatusBadRequest, helper.FailResponse(err.Error()))
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, helper.FailResponse(err.Error()).Stringify())
 		return
 	}
 
 	validate := validator.New()
 	if err := validate.Struct(user); err != nil {
 		log.Error(log.Msg("Failed validate request body", err.Error()), log.O("version", config.Version),
-			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
+			log.O("project", config.ProjectName), log.O(config.TraceKey, traceKey),
 			log.O("package", pack), log.O("body", helper.Stringify(user)))
-		c.Error(err)
-		c.JSON(http.StatusBadRequest, helper.FailResponse(err.Error()))
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, helper.FailResponse(err.Error()).Stringify())
 		return
 	}
 
 	gender, err := domain.GenderValidation(user.Gender)
 	if err != nil {
 		log.Error(log.Msg("Failed validation gender", err.Error()), log.O("version", config.Version),
-			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
+			log.O("project", config.ProjectName), log.O(config.TraceKey, traceKey),
 			log.O("package", pack), log.O("body", helper.Stringify(user)))
-		c.Error(err)
-		c.JSON(http.StatusBadRequest, helper.FailResponse(err.Error()))
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, helper.FailResponse(err.Error()).Stringify())
 		return
 	}
 	user.Gender = gender
@@ -77,39 +77,38 @@ func RegisterController(c *gin.Context) {
 	db, err := provider.ConnectSQL()
 	if err != nil {
 		log.Error(log.Msg("Failed connect database", err.Error()), log.O("version", config.Version),
-			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
+			log.O("project", config.ProjectName), log.O(config.TraceKey, traceKey),
 			log.O("package", pack), log.O("body", helper.Stringify(user)))
-		c.Error(err)
-		c.JSON(http.StatusInternalServerError, helper.FailResponse(err.Error()))
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprintf(w, helper.FailResponse(err.Error()).Stringify())
 		return
 	}
 
-	userRepository := sql.NewUserRepository(c, db)
+	userRepository := sql.NewUserRepository(r.Context(), db)
 
 	notExists := userRepository.CheckEmailNotExist(user.Email)
 	if !notExists {
 		log.Warn(log.Msg("Email already exists", user.Email), log.O("version", config.Version),
-			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
+			log.O("project", config.ProjectName), log.O(config.TraceKey, traceKey),
 			log.O("package", pack), log.O("body", helper.Stringify(user)))
-		errDesc := errors.New(fmt.Sprintf("email %v already exists", user.Email))
-		c.Error(errDesc)
-		c.JSON(http.StatusConflict, helper.FailResponse(errDesc.Error()))
+		w.WriteHeader(http.StatusConflict)
+		fmt.Fprintf(w, helper.FailResponse(fmt.Sprintf("email %v already exists", user.Email)).Stringify())
 		return
 	}
 
 	password, err := actor.HashPassword(user.Password)
 	if err != nil {
 		log.Error(log.Msg("Failed to hash password", err.Error()), log.O("version", config.Version),
-			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
+			log.O("project", config.ProjectName), log.O(config.TraceKey, traceKey),
 			log.O("package", pack), log.O("body", helper.Stringify(user)))
-		c.Error(err)
-		c.JSON(http.StatusBadRequest, helper.FailResponse(err.Error()))
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, helper.FailResponse(err.Error()).Stringify())
 		return
 	}
 	user.ID = uuid.NewV4().String()
 	user.Password = password
 
-	consumerRepository := api.NewConsumerRepository(c)
+	consumerRepository := api.NewConsumerRepository(r.Context())
 	consumer := kong.Kong{
 		CustomID: user.ID,
 		Username: user.Email,
@@ -118,10 +117,10 @@ func RegisterController(c *gin.Context) {
 	consumerResp, status, err := consumerRepository.CreateConsumer(consumer)
 	if err != nil {
 		log.Error(log.Msg("Failed create kong consumer", err.Error()), log.O("version", config.Version),
-			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
+			log.O("project", config.ProjectName), log.O(config.TraceKey, traceKey),
 			log.O("package", pack), log.O("status_code", status), log.O("body", helper.Stringify(consumer)))
-		c.Error(err)
-		c.JSON(status, helper.FailResponse(err.Error()))
+		w.WriteHeader(status)
+		fmt.Fprintf(w, helper.FailResponse(err.Error()).Stringify())
 		return
 	}
 	user.ConsumerID = consumerResp.ID
@@ -134,7 +133,7 @@ func RegisterController(c *gin.Context) {
 
 		go func(ctx context.Context, naming, consumerID string, oauth kong.Oauth) {
 			log.Info(log.Msg("Prepare create kong oauth"), log.O("version", config.Version),
-				log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
+				log.O("project", config.ProjectName), log.O(config.TraceKey, ctx.Value(config.TraceKey)),
 				log.O("package", naming), log.O("consumer_id", consumerID),
 				log.O("body", helper.Stringify(oauth)))
 
@@ -142,29 +141,30 @@ func RegisterController(c *gin.Context) {
 			res, status, err := oauthRepository.CreateOauth(consumerID, oauth)
 			if err != nil {
 				log.Error(log.Msg("Failed create kong oauth", err.Error()), log.O("version", config.Version),
-					log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
+					log.O("project", config.ProjectName), log.O(config.TraceKey, ctx.Value(config.TraceKey)),
 					log.O("package", naming), log.O("body", helper.Stringify(oauth)),
 					log.O("status_code", status))
 				return
 			}
 
 			log.Info(log.Msg("Success create kong oauth", helper.Stringify(res)), log.O("version", config.Version),
-				log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
+				log.O("project", config.ProjectName), log.O(config.TraceKey, ctx.Value(config.TraceKey)),
 				log.O("package", naming), log.O("consumer_id", consumerID), log.O("status_code", status),
 				log.O("body", helper.Stringify(oauth)))
-		}(c, pack, consumerResp.ID, auth)
+		}(r.Context(), pack, consumerResp.ID, auth)
 	}
 
 	if err := userRepository.Create(user); err != nil {
 		log.Error(log.Msg("Failed create new user", err.Error()), log.O("version", config.Version),
-			log.O("project", config.ProjectName), log.O(config.TraceKey, c.GetString(config.TraceKey)),
+			log.O("project", config.ProjectName), log.O(config.TraceKey, traceKey),
 			log.O("package", pack), log.O("body", helper.Stringify(user)))
-		c.Error(err)
-		c.JSON(status, helper.FailResponse(err.Error()))
+		w.WriteHeader(status)
+		fmt.Fprintf(w, helper.FailResponse(err.Error()).Stringify())
 		return
 	}
 
-	c.JSON(http.StatusCreated, helper.ObjectResponse(user))
+	w.WriteHeader(http.StatusCreated)
+	fmt.Fprintf(w, helper.ObjectResponse(user).Stringify())
 }
 
 func GetUserByIDController(c *gin.Context) {

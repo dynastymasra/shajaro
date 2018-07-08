@@ -32,5 +32,9 @@ func Router() *mux.Router {
 		negroni.WrapFunc(actor.CountryListController),
 	)).Methods(http.MethodGet)
 
+	router.HandleFunc("/v1/register", actor.RegisterController).Methods(http.MethodPost)
+
+	router.HandleFunc("/v1/login", actor.LoginController).Methods(http.MethodPost)
+
 	return router
 }
