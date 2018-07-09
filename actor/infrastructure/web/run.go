@@ -31,6 +31,13 @@ func Run(server *graceful.Server) {
 	n.Use(middleware.TraceKey())
 	n.Use(middleware.HTTPStatLogger())
 
+	if config.StatsDEnable {
+		log.Info(log.Msg("Service used instrumentation statsd"), log.O("package", pack),
+			log.O("version", config.Version), log.O("project", config.ProjectName))
+
+		n.Use(middleware.StatsDMiddlewareLogger())
+	}
+
 	n.UseHandlerFunc(muxRouter.ServeHTTP)
 
 	server.Server = &http.Server{
