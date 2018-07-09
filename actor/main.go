@@ -15,6 +15,8 @@ import (
 
 	"shajaro/actor/infrastructure/provider"
 
+	"shajaro/actor/infrastructure/instrumentation"
+
 	log "github.com/dynastymasra/gochill"
 	"gopkg.in/tylerb/graceful.v1"
 )
@@ -36,6 +38,13 @@ func main() {
 
 	log.Info(log.Msg("Prepare to run database migration"), log.O("package", pack), log.O("version", config.Version),
 		log.O("project", config.ProjectName))
+
+	if err := instrumentation.InitiateStatsD(config.StatsDHost, config.StatsDPort, config.AppName, config.StatsDEnable); err != nil {
+		log.Alert(log.Msg("Failed setup statsd client", err.Error()), log.O("package", pack),
+			log.O("version", config.Version), log.O("project", config.ProjectName))
+		os.Exit(1)
+	}
+	defer instrumentation.CloseStatsDClient()
 
 	db, err := provider.ConnectSQL()
 	if err != nil {

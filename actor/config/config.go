@@ -19,6 +19,10 @@ var (
 	KongAuthURL  string
 	KongAdminURL string
 	ProvisionKey string
+
+	StatsDHost   string
+	StatsDPort   string
+	StatsDEnable bool
 )
 
 func setDefault() {
@@ -38,6 +42,10 @@ func setDefault() {
 	viper.SetDefault("KONG_ADMIN_URL", "http://localhost:8001")
 	viper.SetDefault("KONG_AUTH_URL", "https://localhost:8000")
 	viper.SetDefault("PROVISION_KEY", "RRHTRkHLf4ZRQx0ucfBQ49zAmGv30UeG")
+
+	viper.SetDefault("STATSD_HOST", "localhost")
+	viper.SetDefault("STATSD_PORT", "8125")
+	viper.SetDefault("STATSD_ENABLE", false)
 }
 
 func InitConfig() {
@@ -60,4 +68,8 @@ func InitConfig() {
 	KongAuthURL = viper.GetString("KONG_AUTH_URL")
 	KongAdminURL = viper.GetString("KONG_ADMIN_URL")
 	ProvisionKey = viper.GetString("PROVISION_KEY")
+
+	StatsDHost = viper.GetString("STATSD_HOST")
+	StatsDPort = viper.GetString("STATSD_PORT")
+	StatsDEnable = viper.GetBool("STATSD_ENABLE")
 }
