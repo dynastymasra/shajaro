@@ -7,8 +7,6 @@ import (
 	"shajaro/actor/infrastructure/instrumentation"
 	"strings"
 
-	"fmt"
-
 	"github.com/urfave/negroni"
 )
 
@@ -24,7 +22,5 @@ func StatsDMiddlewareLogger() negroni.HandlerFunc {
 		instrumentation.TimingSend(key+".time", t, config.StatsDEnable)
 		instrumentation.StatsDIncrement(key+".calls", config.StatsDEnable)
 		instrumentation.StatsDGauge(key+".goroutines", totalGoroutine, config.StatsDEnable)
-
-		fmt.Println("======================>")
 	}
 }
