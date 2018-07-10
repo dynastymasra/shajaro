@@ -1,5 +1,5 @@
 FROM golang:1.10.3-alpine AS builder
-WORKDIR /go/src/shajaro/actor
+WORKDIR /go/src/github.com/dynastymasra/shajaro/actor
 # install dependecies
 RUN set -ex \
     && apk add --update bash git curl \
@@ -17,9 +17,9 @@ RUN set -ex && apk add --update bash ca-certificates tzdata \
             && rm -rf /var/cache/apk/*
 # app
 WORKDIR /app
-COPY --from=builder /go/src/shajaro/actor/actor /app/
-COPY --from=builder /go/src/shajaro/actor/migration /app/migration
-COPY --from=builder /go/src/shajaro/actor/countries.json /app/
+COPY --from=builder /go/src/github.com/dynastymasra/shajaro/actor/actor /app/
+COPY --from=builder /go/src/github.com/dynastymasra/shajaro/actor/migration /app/migration
+COPY --from=builder /go/src/github.com/dynastymasra/shajaro/actor/countries.json /app/
 ## runtime configs
 EXPOSE 8080
 ENTRYPOINT ./actor
