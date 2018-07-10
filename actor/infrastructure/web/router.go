@@ -3,13 +3,14 @@ package web
 import (
 	"fmt"
 	"net/http"
-	"shajaro/actor/config"
 
-	"shajaro/actor/infrastructure/web/controller"
+	"github.com/dynastymasra/shajaro/actor/config"
 
-	"shajaro/actor/infrastructure/web/controller/actor"
+	"github.com/dynastymasra/shajaro/actor/infrastructure/web/controller"
 
-	"shajaro/actor/infrastructure/web/middleware"
+	"github.com/dynastymasra/shajaro/actor/infrastructure/web/controller/actor"
+
+	"github.com/dynastymasra/shajaro/actor/infrastructure/web/middleware"
 
 	"github.com/gorilla/mux"
 	"github.com/urfave/negroni"

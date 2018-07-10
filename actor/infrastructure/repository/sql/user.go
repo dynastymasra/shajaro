@@ -3,13 +3,14 @@ package sql
 import (
 	"context"
 
-	"shajaro/actor/domain/actor"
+	"github.com/dynastymasra/shajaro/actor/domain/actor"
 
 	"reflect"
 	"runtime"
-	"shajaro/actor/config"
 
-	"shajaro/actor/helper"
+	"github.com/dynastymasra/shajaro/actor/config"
+
+	"github.com/dynastymasra/shajaro/actor/helper"
 
 	log "github.com/dynastymasra/gochill"
 	"github.com/jinzhu/gorm"

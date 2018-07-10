@@ -1,10 +1,11 @@
 package middleware
 
 import (
-	"shajaro/actor/config"
+	"github.com/dynastymasra/shajaro/actor/config"
 
 	"net/http"
-	"shajaro/actor/helper"
+
+	"github.com/dynastymasra/shajaro/actor/helper"
 
 	"strings"
 

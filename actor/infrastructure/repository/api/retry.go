@@ -3,7 +3,7 @@ package api
 import (
 	"time"
 
-	"shajaro/actor/config"
+	"github.com/dynastymasra/shajaro/actor/config"
 
 	"github.com/cenkalti/backoff"
 )

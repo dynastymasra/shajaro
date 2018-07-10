@@ -6,9 +6,9 @@ import (
 	"reflect"
 	"runtime"
 
-	"shajaro/actor/config"
-	"shajaro/actor/helper"
-	"shajaro/actor/infrastructure/provider"
+	"github.com/dynastymasra/shajaro/actor/config"
+	"github.com/dynastymasra/shajaro/actor/helper"
+	"github.com/dynastymasra/shajaro/actor/infrastructure/provider"
 
 	"fmt"
 

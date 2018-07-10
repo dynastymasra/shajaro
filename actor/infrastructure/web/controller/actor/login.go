@@ -4,24 +4,27 @@ import (
 	"bytes"
 	"reflect"
 	"runtime"
-	"shajaro/actor/config"
-	"shajaro/actor/domain/actor"
+
+	"github.com/dynastymasra/shajaro/actor/config"
+	"github.com/dynastymasra/shajaro/actor/domain/actor"
 
 	"encoding/json"
 	"net/http"
-	"shajaro/actor/helper"
+
+	"github.com/dynastymasra/shajaro/actor/helper"
 
 	"fmt"
-	"shajaro/actor/infrastructure/provider"
-	"shajaro/actor/infrastructure/repository/sql"
+
+	"github.com/dynastymasra/shajaro/actor/infrastructure/provider"
+	"github.com/dynastymasra/shajaro/actor/infrastructure/repository/sql"
 
 	"errors"
 
-	"shajaro/actor/domain"
+	"github.com/dynastymasra/shajaro/actor/domain"
 
-	"shajaro/actor/infrastructure/repository/api"
+	"github.com/dynastymasra/shajaro/actor/infrastructure/repository/api"
 
-	"shajaro/actor/service"
+	"github.com/dynastymasra/shajaro/actor/service"
 
 	log "github.com/dynastymasra/gochill"
 	"gopkg.in/go-playground/validator.v9"

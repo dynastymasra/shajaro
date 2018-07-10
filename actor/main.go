@@ -10,12 +10,12 @@ import (
 
 	"fmt"
 
-	"shajaro/actor/config"
-	"shajaro/actor/infrastructure/web"
+	"github.com/dynastymasra/shajaro/actor/config"
+	"github.com/dynastymasra/shajaro/actor/infrastructure/web"
 
-	"shajaro/actor/infrastructure/provider"
+	"github.com/dynastymasra/shajaro/actor/infrastructure/provider"
 
-	"shajaro/actor/infrastructure/instrumentation"
+	"github.com/dynastymasra/shajaro/actor/infrastructure/instrumentation"
 
 	log "github.com/dynastymasra/gochill"
 	"gopkg.in/tylerb/graceful.v1"

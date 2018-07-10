@@ -2,7 +2,8 @@ package service
 
 import (
 	"context"
-	"shajaro/actor/domain/kong"
+
+	"github.com/dynastymasra/shajaro/actor/domain/kong"
 )
 
 type ConsumerService struct {

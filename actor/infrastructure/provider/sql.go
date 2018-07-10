@@ -11,7 +11,7 @@ import (
 
 	"errors"
 
-	"shajaro/actor/config"
+	"github.com/dynastymasra/shajaro/actor/config"
 
 	log "github.com/dynastymasra/gochill"
 	_ "github.com/jinzhu/gorm/dialects/postgres"

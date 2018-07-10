@@ -6,9 +6,10 @@ import (
 	"net/http"
 	"reflect"
 	"runtime"
-	"shajaro/actor/config"
-	"shajaro/actor/domain/kong"
-	"shajaro/actor/helper"
+
+	"github.com/dynastymasra/shajaro/actor/config"
+	"github.com/dynastymasra/shajaro/actor/domain/kong"
+	"github.com/dynastymasra/shajaro/actor/helper"
 
 	"fmt"
 

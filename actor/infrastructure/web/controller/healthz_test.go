@@ -5,13 +5,13 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"shajaro/actor/infrastructure/web/controller"
+	"github.com/dynastymasra/shajaro/actor/infrastructure/web/controller"
 
 	"context"
 
-	"shajaro/actor/config"
+	"github.com/dynastymasra/shajaro/actor/config"
 
-	"shajaro/actor/infrastructure/provider"
+	"github.com/dynastymasra/shajaro/actor/infrastructure/provider"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"

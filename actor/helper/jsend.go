@@ -4,7 +4,8 @@ import (
 	"encoding/json"
 	"reflect"
 	"runtime"
-	"shajaro/actor/config"
+
+	"github.com/dynastymasra/shajaro/actor/config"
 
 	log "github.com/dynastymasra/gochill"
 )

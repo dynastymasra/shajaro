@@ -3,9 +3,10 @@ package middleware
 import (
 	"net/http"
 	"runtime"
-	"shajaro/actor/config"
-	"shajaro/actor/infrastructure/instrumentation"
 	"strings"
+
+	"github.com/dynastymasra/shajaro/actor/config"
+	"github.com/dynastymasra/shajaro/actor/infrastructure/instrumentation"
 
 	"github.com/urfave/negroni"
 )

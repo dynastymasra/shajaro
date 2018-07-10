@@ -8,9 +8,9 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"shajaro/actor/config"
-	"shajaro/actor/domain/actor"
-	"shajaro/actor/helper"
+	"github.com/dynastymasra/shajaro/actor/config"
+	"github.com/dynastymasra/shajaro/actor/domain/actor"
+	"github.com/dynastymasra/shajaro/actor/helper"
 
 	"fmt"
 

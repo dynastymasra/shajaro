@@ -1,7 +1,7 @@
 package web
 
 import (
-	"shajaro/actor/config"
+	"github.com/dynastymasra/shajaro/actor/config"
 
 	"reflect"
 	"runtime"
@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"os"
 
-	"shajaro/actor/infrastructure/web/middleware"
+	"github.com/dynastymasra/shajaro/actor/infrastructure/web/middleware"
 
 	log "github.com/dynastymasra/gochill"
 	"gopkg.in/tylerb/graceful.v1"

@@ -1,6 +1,6 @@
 package kong
 
-import "shajaro/actor/domain"
+import "github.com/dynastymasra/shajaro/actor/domain"
 
 type (
 	Oauth struct {

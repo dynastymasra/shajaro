@@ -1,14 +1,15 @@
 package middleware
 
 import (
-	"shajaro/actor/config"
+	"github.com/dynastymasra/shajaro/actor/config"
 
 	"strings"
 
 	"net/http"
 	"reflect"
 	"runtime"
-	"shajaro/actor/helper"
+
+	"github.com/dynastymasra/shajaro/actor/helper"
 
 	"fmt"
 

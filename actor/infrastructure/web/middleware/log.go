@@ -4,8 +4,9 @@ import (
 	"net/http"
 	"reflect"
 	"runtime"
-	"shajaro/actor/config"
 	"time"
+
+	"github.com/dynastymasra/shajaro/actor/config"
 
 	log "github.com/dynastymasra/gochill"
 	"github.com/urfave/negroni"

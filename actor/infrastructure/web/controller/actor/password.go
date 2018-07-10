@@ -6,14 +6,16 @@ import (
 	"net/http"
 	"reflect"
 	"runtime"
-	"shajaro/actor/config"
-	"shajaro/actor/helper"
-	"shajaro/actor/infrastructure/provider"
 
-	"shajaro/actor/domain/actor"
+	"github.com/dynastymasra/shajaro/actor/config"
+	"github.com/dynastymasra/shajaro/actor/helper"
+	"github.com/dynastymasra/shajaro/actor/infrastructure/provider"
+
+	"github.com/dynastymasra/shajaro/actor/domain/actor"
 
 	"errors"
-	"shajaro/actor/infrastructure/repository/sql"
+
+	"github.com/dynastymasra/shajaro/actor/infrastructure/repository/sql"
 
 	"fmt"
 

@@ -10,15 +10,15 @@ import (
 
 	"fmt"
 
-	"shajaro/actor/config"
-	"shajaro/actor/domain"
-	"shajaro/actor/domain/actor"
-	"shajaro/actor/domain/kong"
-	"shajaro/actor/helper"
-	"shajaro/actor/infrastructure/provider"
-	"shajaro/actor/infrastructure/repository/api"
-	"shajaro/actor/infrastructure/repository/sql"
-	"shajaro/actor/service"
+	"github.com/dynastymasra/shajaro/actor/config"
+	"github.com/dynastymasra/shajaro/actor/domain"
+	"github.com/dynastymasra/shajaro/actor/domain/actor"
+	"github.com/dynastymasra/shajaro/actor/domain/kong"
+	"github.com/dynastymasra/shajaro/actor/helper"
+	"github.com/dynastymasra/shajaro/actor/infrastructure/provider"
+	"github.com/dynastymasra/shajaro/actor/infrastructure/repository/api"
+	"github.com/dynastymasra/shajaro/actor/infrastructure/repository/sql"
+	"github.com/dynastymasra/shajaro/actor/service"
 
 	"context"
 

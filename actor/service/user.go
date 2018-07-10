@@ -4,9 +4,10 @@ import (
 	"context"
 	"reflect"
 	"runtime"
-	"shajaro/actor/config"
-	"shajaro/actor/domain/actor"
-	"shajaro/actor/helper"
+
+	"github.com/dynastymasra/shajaro/actor/config"
+	"github.com/dynastymasra/shajaro/actor/domain/actor"
+	"github.com/dynastymasra/shajaro/actor/helper"
 
 	log "github.com/dynastymasra/gochill"
 )
