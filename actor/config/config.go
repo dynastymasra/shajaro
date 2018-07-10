@@ -4,7 +4,6 @@ import "github.com/spf13/viper"
 
 var (
 	Address          string
-	GinMode          string
 	RetryDuration    int
 	MaxRetryInterval int
 
@@ -27,7 +26,6 @@ var (
 
 func setDefault() {
 	viper.SetDefault("ADDRESS", ":8080")
-	viper.SetDefault("GIN_MODE", "debug")
 	viper.SetDefault("RETRY_DURATION", 30)
 	viper.SetDefault("MAX_RETRY_INTERVAL", 5)
 
@@ -53,7 +51,6 @@ func InitConfig() {
 	viper.AutomaticEnv()
 
 	Address = viper.GetString("ADDRESS")
-	GinMode = viper.GetString("GIN_MODE")
 	RetryDuration = viper.GetInt("RETRY_DURATION")
 	MaxRetryInterval = viper.GetInt("MAX_RETRY_INTERVAL")
 

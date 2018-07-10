@@ -7,19 +7,40 @@ import (
 
 	"shajaro/actor/infrastructure/web/controller"
 
-	"github.com/gin-gonic/gin"
+	"context"
+
+	"shajaro/actor/config"
+
+	"shajaro/actor/infrastructure/provider"
+
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 )
 
-func TestPingController_Success(t *testing.T) {
-	gin.SetMode(gin.TestMode)
-	router := gin.New()
-	router.HEAD("/v1/healthz", controller.HealthzController)
+type HealthzControllerSuite struct {
+	suite.Suite
+	context.Context
+}
 
-	req, _ := http.NewRequest(http.MethodHead, "/v1/healthz", nil)
+func Test_HealthzController(t *testing.T) {
+	suite.Run(t, new(HealthzControllerSuite))
+}
 
-	resp := httptest.NewRecorder()
-	router.ServeHTTP(resp, req)
+func (s *HealthzControllerSuite) SetupSuite() {
+	config.InitConfig()
+	provider.ConnectSQL()
+}
 
-	assert.Equal(t, http.StatusOK, resp.Code)
+func (s *HealthzControllerSuite) TearDownSuite() {
+	db, _ := provider.ConnectSQL()
+	provider.CloseDB(db)
+}
+
+func (s *HealthzControllerSuite) Test_PingController_Success() {
+	w := httptest.NewRecorder()
+	r := httptest.NewRequest(http.MethodGet, "/v1/healthz", nil)
+
+	controller.HealthzController(w, r)
+
+	assert.Equal(s.T(), http.StatusOK, w.Code)
 }
