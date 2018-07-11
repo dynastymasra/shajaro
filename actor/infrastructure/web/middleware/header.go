@@ -20,13 +20,11 @@ import (
 func TraceKey() negroni.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 		traceKey := r.Header.Get(config.HeaderTraceID)
-		if len(traceKey) > 0 {
-			ctx := context.WithValue(r.Context(), config.TraceKey, traceKey)
-			next(w, r.WithContext(ctx))
-		} else {
-			ctx := context.WithValue(r.Context(), config.TraceKey, random.String(11))
-			next(w, r.WithContext(ctx))
+		if len(traceKey) < 1 {
+			traceKey = random.String(11)
 		}
+		ctx := context.WithValue(r.Context(), config.TraceKey, traceKey)
+		next(w, r.WithContext(ctx))
 	}
 }
 

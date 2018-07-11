@@ -39,12 +39,9 @@ func NewrelicMiddlewareHandler() negroni.HandlerFunc {
 func NewrelicInstrumentation() negroni.HandlerFunc {
 	return negroni.HandlerFunc(func(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 		newRelicTrx, ok := w.(newrelic.Transaction)
-		if !ok {
-			next(w, r)
-			return
+		if ok {
+			ctx := context.WithValue(r.Context(), config.NewrelicTxnKey, newRelicTrx)
+			next(w, r.WithContext(ctx))
 		}
-
-		ctx := context.WithValue(r.Context(), config.NewrelicTxnKey, newRelicTrx)
-		next(w, r.WithContext(ctx))
 	})
 }
