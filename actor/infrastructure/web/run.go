@@ -48,6 +48,7 @@ func Run(server *graceful.Server) {
 			log.O("version", config.Version), log.O("project", config.ProjectName))
 
 		n.Use(middleware.NewrelicMiddlewareHandler())
+		n.Use(middleware.NewrelicInstrumentation())
 	}
 
 	n.UseHandlerFunc(router.ServeHTTP)

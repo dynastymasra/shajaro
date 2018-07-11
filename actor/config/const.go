@@ -13,6 +13,9 @@ const (
 	AuthUserIDHeader = "X-Authenticated-Userid"
 	ConsumerIDHeader = "X-Consumer-Id"
 
+	NewrelicTxnKey = "NewrelicTxnKey"
+	NewrelicAppKey = "NewrelicAppKey"
+
 	CountryJSON = "countries.json"
 
 	ActorScopes = "actor.read actor.update actor.delete"
