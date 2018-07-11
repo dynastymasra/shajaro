@@ -46,6 +46,12 @@ func main() {
 	}
 	defer instrumentation.CloseStatsDClient()
 
+	if err := instrumentation.InitiateNewrelic(config.AppName, config.NewrelicLicenseKey, config.NewrelicEnabled); err != nil {
+		log.Alert(log.Msg("Failed setup newrelic client", err.Error()), log.O("package", pack),
+			log.O("version", config.Version), log.O("project", config.ProjectName))
+		os.Exit(1)
+	}
+
 	db, err := provider.ConnectSQL()
 	if err != nil {
 		log.Alert(log.Msg("Failed connecting to database", err.Error()), log.O("package", pack),

@@ -7,6 +7,7 @@ import (
 
 	"github.com/dynastymasra/shajaro/actor/infrastructure/instrumentation"
 
+	"github.com/newrelic/go-agent"
 	"github.com/urfave/negroni"
 )
 
@@ -23,4 +24,11 @@ func StatsDMiddlewareLogger() negroni.HandlerFunc {
 		instrumentation.StatsDIncrement(key + ".calls")
 		instrumentation.StatsDGauge(key+".goroutines", totalGoroutine)
 	}
+}
+
+func NewrelicMiddlewareHandler() negroni.HandlerFunc {
+	return negroni.HandlerFunc(func(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
+		_, nextHandler := newrelic.WrapHandleFunc(instrumentation.NewRelicApp(), r.URL.Path, next)
+		nextHandler(w, r)
+	})
 }

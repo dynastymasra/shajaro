@@ -29,6 +29,10 @@ project = "shajaro"
 codename = "actor"
 version = "0.1.0"
 
+requried = ["github.com/newrelic/go-agent/_integrations/nrgorilla/v1",
+            "github.com/stretchr/testify/mock",
+            "github.com/stretchr/testify/suite"]
+
 [[constraint]]
   branch = "master"
   name = "github.com/dynastymasra/gochill"
@@ -79,8 +83,11 @@ version = "0.1.0"
 
 [[constraint]]
   name = "github.com/stretchr/testify"
-  packages = ["mock", "suite"]
   version = "^1.2.2"
+
+[[constraint]]
+  name = "github.com/newrelic/go-agent"
+  version = "^2.0.0"
 
 [prune]
   go-tests = true

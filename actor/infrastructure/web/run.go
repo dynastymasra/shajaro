@@ -13,7 +13,10 @@ import (
 
 	"github.com/dynastymasra/shajaro/actor/infrastructure/web/middleware"
 
+	nrgorilla "github.com/newrelic/go-agent/_integrations/nrgorilla/v1"
+
 	log "github.com/dynastymasra/gochill"
+	"github.com/dynastymasra/shajaro/actor/infrastructure/instrumentation"
 	"gopkg.in/tylerb/graceful.v1"
 )
 
@@ -23,7 +26,9 @@ func Run(server *graceful.Server) {
 	log.Info(log.Msg("Start run web application"), log.O("package", pack),
 		log.O("version", config.Version), log.O("project", config.ProjectName))
 
+	newRelicApp := instrumentation.NewRelicApp()
 	muxRouter := Router()
+	router := nrgorilla.InstrumentRoutes(muxRouter, newRelicApp)
 
 	n := negroni.New(negroni.NewRecovery())
 
@@ -38,7 +43,14 @@ func Run(server *graceful.Server) {
 		n.Use(middleware.StatsDMiddlewareLogger())
 	}
 
-	n.UseHandlerFunc(muxRouter.ServeHTTP)
+	if instrumentation.NewRelicConfig().Enabled {
+		log.Info(log.Msg("Service used instrumentation newrelic"), log.O("package", pack),
+			log.O("version", config.Version), log.O("project", config.ProjectName))
+
+		n.Use(middleware.NewrelicMiddlewareHandler())
+	}
+
+	n.UseHandlerFunc(router.ServeHTTP)
 
 	server.Server = &http.Server{
 		Addr:    config.Address,

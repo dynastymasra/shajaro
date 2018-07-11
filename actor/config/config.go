@@ -22,6 +22,9 @@ var (
 	StatsDHost   string
 	StatsDPort   string
 	StatsDEnable bool
+
+	NewrelicLicenseKey string
+	NewrelicEnabled    bool
 )
 
 func setDefault() {
@@ -43,7 +46,10 @@ func setDefault() {
 
 	viper.SetDefault("STATSD_HOST", "localhost")
 	viper.SetDefault("STATSD_PORT", "8125")
-	viper.SetDefault("STATSD_ENABLE", false)
+	viper.SetDefault("STATSD_ENABLED", false)
+
+	viper.SetDefault("NEWRELIC_LICENSE_KEY", "1234567890123456789012345678901234567890")
+	viper.SetDefault("NEWRELIC_ENABLED", false)
 }
 
 func InitConfig() {
@@ -68,5 +74,8 @@ func InitConfig() {
 
 	StatsDHost = viper.GetString("STATSD_HOST")
 	StatsDPort = viper.GetString("STATSD_PORT")
-	StatsDEnable = viper.GetBool("STATSD_ENABLE")
+	StatsDEnable = viper.GetBool("STATSD_ENABLED")
+
+	NewrelicLicenseKey = viper.GetString("NEWRELIC_LICENSE_KEY")
+	NewrelicEnabled = viper.GetBool("NEWRELIC_ENABLED")
 }
